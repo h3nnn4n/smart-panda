@@ -1,0 +1,11 @@
+[package]
+name = "smart-panda"
+version = "0.1.0"
+authors = ["h3nnn4n <uber.renan@gmail.com>"]
+
+[dependencies]
+
+[dependencies.sdl2]
+  version = "0.31"
+  default-features = false
+  features = ["ttf","image","gfx","mixer"]
