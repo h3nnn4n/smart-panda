@@ -36,6 +36,10 @@ impl GameState {
         self.board.print_board()
     }
 
+    pub fn has_active_piece(&mut self) -> bool {
+        self.board.has_active_piece()
+    }
+
     pub fn step(&mut self) {
         self.board.step();
     }

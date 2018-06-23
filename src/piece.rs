@@ -36,6 +36,18 @@ impl Piece {
         self.active
     }
 
+    pub fn hard_drop(&mut self) {
+        ()
+    }
+
+    pub fn move_down(&mut self) {
+        self.posy += 1;
+    }
+
+    pub fn sleep(&mut self) {
+        self.active = false
+    }
+
     pub fn spawn_piece(id: u32) -> Piece {
         match id {
             1 => Piece::i_piece(),
