@@ -18,7 +18,7 @@ pub fn main() {
     //game.print_board();
 
     for _ in 0..40 {
-        //print!("{}[2J", 27 as char);
+        print!("{}[2J", 27 as char);
         game.print_board();
         thread::sleep(time::Duration::from_millis(120));
 

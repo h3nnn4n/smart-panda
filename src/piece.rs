@@ -92,7 +92,7 @@ impl Piece {
             posy: SPAWN_POS_Y,
             active: true,
             rotation: 0,
-            rotation_freedom: 3,
+            rotation_freedom: 4,
             body: [(0, 0), (0, 1), (0, 2), (1, 2)],
         }
     }
@@ -104,7 +104,7 @@ impl Piece {
             posy: SPAWN_POS_Y,
             active: true,
             rotation: 0,
-            rotation_freedom: 3,
+            rotation_freedom: 4,
             body: [(0, 0), (0, 1), (0, 2), (-1, 2)],
         }
     }
@@ -116,8 +116,8 @@ impl Piece {
             posy: SPAWN_POS_Y,
             active: true,
             rotation: 0,
-            rotation_freedom: 3,
-            body: [(0, 0), (0, 1), (0, 2), (-1, 2)],
+            rotation_freedom: 4,
+            body: [(0, 0), (1, 0), (0, -1), (-1, -1)],
         }
     }
 
@@ -128,8 +128,8 @@ impl Piece {
             posy: SPAWN_POS_Y,
             active: true,
             rotation: 0,
-            rotation_freedom: 3,
-            body: [(0, 0), (0, 1), (0, 2), (-1, 2)],
+            rotation_freedom: 4,
+            body: [(0, 0), (-1, 0), (0, -1), (1, -1)],
         }
     }
 
@@ -140,8 +140,8 @@ impl Piece {
             posy: SPAWN_POS_Y,
             active: true,
             rotation: 0,
-            rotation_freedom: 3,
-            body: [(0, 0), (0, 1), (0, 2), (-1, 2)],
+            rotation_freedom: 4,
+            body: [(0, 0), (1, 0), (0, -1), (-1, 0)],
         }
     }
 }
