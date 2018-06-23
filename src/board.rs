@@ -114,8 +114,7 @@ impl Board {
             let piece_id = self.pieces[i].get_id();
             let is_active = self.pieces[i].is_active();
 
-            let piece_piece = self.get_piece(x as u32, y as u32);
-            println!("{:?}", piece_piece);
+            let piece_piece = self.get_piece(x as u32, (y + 1) as u32);
             if piece_piece > 0 && piece_piece < 127 {
                 return false;
             }
