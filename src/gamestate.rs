@@ -24,11 +24,19 @@ impl GameState {
         self.board.reset();
     }
 
+    pub fn spawn_piece(&mut self, id: u32) {
+        self.board.spawn_piece(id);
+    }
+
     pub fn spawn_random_piece(&mut self) {
         self.board.spawn_random_piece();
     }
 
     pub fn print_board(&self) {
         self.board.print_board()
+    }
+
+    pub fn step(&mut self) {
+        self.board.step();
     }
 }

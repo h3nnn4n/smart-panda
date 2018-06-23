@@ -42,7 +42,7 @@ impl Board {
 
     pub fn print_board(&self) {
         for j in 0..self.height {
-            print!("{:4} ", j + 1);
+            print!("{:4}  ", j + 1);
             for i in 0..self.width {
                 let c = match self.get_piece(i, j) {
                     0 => ' ',
@@ -50,11 +50,43 @@ impl Board {
                     _ => 'X',
                 };
 
-                print!("{} ", c);
+                print!("{}", c);
             }
 
             println!();
         }
+    }
+
+    pub fn spawn_piece(&mut self, id: u32) {
+        let new_piece = piece::Piece::spawn_piece(id);
+        self.pieces.push(new_piece);
+        self.update_board();
+    }
+
+    pub fn step(&mut self) {
+        let active = self.get_active_piece_index();
+        match active {
+            None => (),
+            Some(i) => self.move_active_piece(i),
+        }
+    }
+
+    fn move_active_piece(&mut self, index: usize) {
+        ()
+    }
+
+    fn get_active_piece_index(&self) -> Option<usize> {
+        if self.pieces.len() == 0 {
+            return None;
+        }
+
+        for i in 0..self.pieces.len() {
+            if self.pieces[i].is_active() {
+                return Some(i);
+            }
+        }
+
+        return None;
     }
 
     fn update_board(&mut self) {
@@ -63,10 +95,13 @@ impl Board {
         for i in 0..self.pieces.len() {
             for j in 0..4 {
                 let (x_, y_) = self.pieces[i].get_body()[j];
-                let (x, y) = (x_ + self.pieces[i].get_x(), y_ + self.pieces[i].get_y());
+                let (x, y) = (
+                    x_ + self.pieces[i].get_x() as i32,
+                    y_ + self.pieces[i].get_y() as i32,
+                );
                 let piece_id = self.pieces[i].get_id();
                 let is_active = self.pieces[i].is_active();
-                self.place_piece(x, y, piece_id, is_active);
+                self.place_piece(x as u32, y as u32, piece_id, is_active);
             }
         }
     }
