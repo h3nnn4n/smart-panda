@@ -40,6 +40,14 @@ impl Piece {
         ()
     }
 
+    pub fn move_left(&mut self) {
+        self.posx -= 1;
+    }
+
+    pub fn move_right(&mut self) {
+        self.posx += 1;
+    }
+
     pub fn move_down(&mut self) {
         self.posy += 1;
     }

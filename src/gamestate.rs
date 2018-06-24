@@ -2,7 +2,8 @@ use board;
 
 pub struct GameState {
     points: u32,
-    board: board::Board,
+    lines_cleared: u32,
+    pub board: board::Board,
 }
 
 impl GameState {
@@ -11,6 +12,7 @@ impl GameState {
 
         GameState {
             points: 0,
+            lines_cleared: 0,
             board: bb,
         }
     }

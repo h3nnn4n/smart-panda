@@ -41,8 +41,14 @@ impl Board {
     }
 
     pub fn print_board(&self) {
+        print!("      +");
+        for i in 0..self.width {
+            print!("-");
+        }
+        println!("+ ");
+
         for j in 0..self.height {
-            print!("{:4}  ", j + 1);
+            print!("{:4}  |", j + 1);
             for i in 0..self.width {
                 let c = match self.get_piece(i, j) {
                     0 => ' ',
@@ -53,8 +59,14 @@ impl Board {
                 print!("{}", c);
             }
 
-            println!();
+            println!("|");
         }
+
+        print!("      +");
+        for i in 0..self.width {
+            print!("-");
+        }
+        println!("+ ");
     }
 
     pub fn spawn_piece(&mut self, id: u32) {
@@ -70,7 +82,7 @@ impl Board {
             None => (),
             Some(i) => {
                 if self.can_active_piece_move_down(i) {
-                    self.move_active_piece(i)
+                    self.move_active_piece_down();
                 } else {
                     self.sleep_active_piece(i);
                     self.update_board();
@@ -92,9 +104,107 @@ impl Board {
         self.pieces[i].sleep();
     }
 
-    fn move_active_piece(&mut self, i: usize) {
-        self.pieces[i].move_down();
-        self.update_board();
+    pub fn move_active_piece_right(&mut self) -> bool {
+        let active = self.get_active_piece_index();
+
+        match active {
+            None => return false,
+            Some(i) => {
+                if self.can_active_piece_move_right(i) {
+                    self.pieces[i].move_right();
+                    self.update_board();
+                    true
+                } else {
+                    false
+                }
+            }
+        }
+    }
+
+    pub fn move_active_piece_left(&mut self) -> bool {
+        let active = self.get_active_piece_index();
+
+        match active {
+            None => return false,
+            Some(i) => {
+                if self.can_active_piece_move_left(i) {
+                    self.pieces[i].move_left();
+                    self.update_board();
+                    true
+                } else {
+                    false
+                }
+            }
+        }
+    }
+
+    pub fn move_active_piece_down(&mut self) -> bool {
+        let active = self.get_active_piece_index();
+
+        match active {
+            None => return false,
+            Some(i) => {
+                if self.can_active_piece_move_left(i) {
+                    self.pieces[i].move_down();
+                    self.update_board();
+                    true
+                } else {
+                    false
+                }
+            }
+        }
+    }
+
+    fn can_active_piece_move_right(&self, i: usize) -> bool {
+        let x_limit = self.width;
+
+        for j in 0..4 {
+            let (x_, y_) = self.pieces[i].get_body()[j];
+            let (x, y) = (
+                x_ + self.pieces[i].get_x() as i32,
+                y_ + self.pieces[i].get_y() as i32,
+            );
+
+            if x + 1 >= x_limit as i32 {
+                return false;
+            }
+
+            let piece_id = self.pieces[i].get_id();
+            let is_active = self.pieces[i].is_active();
+
+            let piece_piece = self.get_piece((x + 1) as u32, x as u32);
+            if piece_piece > 0 && piece_piece < 127 {
+                return false;
+            }
+        }
+
+        true
+    }
+
+    fn can_active_piece_move_left(&self, i: usize) -> bool {
+        let x_limit = 0;
+
+        for j in 0..4 {
+            let (x_, y_) = self.pieces[i].get_body()[j];
+            let (x, y) = (
+                x_ + self.pieces[i].get_x() as i32,
+                y_ + self.pieces[i].get_y() as i32,
+            );
+
+            if x <= x_limit as i32 {
+                return false;
+            }
+
+            let piece_id = self.pieces[i].get_id();
+            let is_active = self.pieces[i].is_active();
+
+            let piece_piece = self.get_piece((x - 1) as u32, x as u32);
+            if piece_piece > 0 && piece_piece < 127 {
+                return false;
+            }
+        }
+
+        true
     }
 
     fn can_active_piece_move_down(&self, i: usize) -> bool {
