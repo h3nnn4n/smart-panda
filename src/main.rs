@@ -24,7 +24,7 @@ pub fn main() {
 
         //game.step();
 
-        let moved = game.board.move_active_piece_left();
+        let moved = game.board.move_active_piece_right();
         if !moved {
             break;
         }
@@ -42,11 +42,12 @@ pub fn main() {
         //game.step();
         let moved = game.board.move_active_piece_down();
         if !moved {
+            println!("break down");
             break;
         }
 
-        if game.has_active_piece() {
-            game.spawn_piece(2);
-        }
+        //if game.has_active_piece() {
+        //game.spawn_piece(2);
+        //}
     }
 }

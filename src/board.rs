@@ -144,7 +144,7 @@ impl Board {
         match active {
             None => return false,
             Some(i) => {
-                if self.can_active_piece_move_left(i) {
+                if self.can_active_piece_move_down(i) {
                     self.pieces[i].move_down();
                     self.update_board();
                     true
