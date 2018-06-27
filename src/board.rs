@@ -104,6 +104,48 @@ impl Board {
         self.pieces[i].sleep();
     }
 
+    fn can_active_piece_rotate_left(&self, i: usize) -> bool {
+        true // FIXME
+    }
+
+    fn can_active_piece_rotate_right(&self, i: usize) -> bool {
+        true // FIXME
+    }
+
+    pub fn rotate_active_piece_left(&mut self) -> bool {
+        let active = self.get_active_piece_index();
+
+        match active {
+            None => return false,
+            Some(i) => {
+                if self.can_active_piece_rotate_left(i) {
+                    self.pieces[i].rotate_left();
+                    self.update_board();
+                    true
+                } else {
+                    false
+                }
+            }
+        }
+    }
+
+    pub fn rotate_active_piece_right(&mut self) -> bool {
+        let active = self.get_active_piece_index();
+
+        match active {
+            None => return false,
+            Some(i) => {
+                if self.can_active_piece_rotate_right(i) {
+                    self.pieces[i].rotate_right();
+                    self.update_board();
+                    true
+                } else {
+                    false
+                }
+            }
+        }
+    }
+
     pub fn move_active_piece_right(&mut self) -> bool {
         let active = self.get_active_piece_index();
 

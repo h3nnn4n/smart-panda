@@ -17,6 +17,14 @@ pub fn main() {
     //game.spawn_piece(7);
     //game.print_board();
 
+    for _ in 0..0 {
+        print!("{}[2J", 27 as char);
+        game.print_board();
+        thread::sleep(time::Duration::from_millis(160));
+
+        game.board.rotate_active_piece_right();
+    }
+
     for _ in 0..5 {
         print!("{}[2J", 27 as char);
         game.print_board();

@@ -54,6 +54,22 @@ impl Piece {
         self.posx += 1;
     }
 
+    pub fn rotate_right(&mut self) {
+        self.rotation = (self.rotation + 1) % self.rotation_freedom;
+
+        self.update_piece_body()
+    }
+
+    pub fn rotate_left(&mut self) {
+        self.rotation -= 1;
+
+        if self.rotation < 0 {
+            self.rotation = self.rotation_freedom - 1;
+        }
+
+        self.update_piece_body()
+    }
+
     pub fn move_down(&mut self) {
         self.posy += 1;
     }
@@ -73,6 +89,10 @@ impl Piece {
             7 => Piece::t_piece(),
             _ => Piece::o_piece(),
         }
+    }
+
+    fn update_piece_body(&mut self) {
+        self.body = self.rotation_matrix[self.rotation as usize];
     }
 
     fn i_piece() -> Piece {
