@@ -3,6 +3,9 @@
 Smart Panda is a tetris engine to be used mainly for the purpose of (fun) developing Tetris Playing Agents.
 
 ## Todo:
+  - [ ] Make the game playable;
+    - [ ] Using ncurses;
+    - [ ] Using SDL2;
   - [ ] More research of what should be implemented;
   - [ ] Piece rotation systems:
     - [ ] [Nintendo rotation system](https://cdn.wikimg.net/en/strategywiki/images/5/53/Tetris_rotation_Nintendo.png)
