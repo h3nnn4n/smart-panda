@@ -1,4 +1,7 @@
+extern crate rand;
+
 use board;
+use rand::Rng;
 use std::{thread, time};
 
 pub struct GameState {
@@ -51,6 +54,44 @@ impl GameState {
         let cleared_lines = self.board.clear_lines();
         self.lines_cleared += cleared_lines;
         cleared_lines
+    }
+
+    pub fn demo_random(&mut self) {
+        let mut rng = rand::thread_rng();
+
+        self.set_board_size(10, 18);
+
+        loop {
+            self.spawn_random_piece();
+            let direction = rng.gen_range(0, 2);
+            let amount = rng.gen_range(0, 5);
+            let rotation = rng.gen_range(0, 4);
+
+            for _ in 0..rotation {
+                self.board.rotate_active_piece_right();
+                self.update_view();
+            }
+
+            for _ in 0..amount {
+                let moved = match direction {
+                    0 => self.board.move_active_piece_left(),
+                    1 => self.board.move_active_piece_right(),
+                    _ => unreachable!(),
+                };
+
+                self.update_view();
+
+                if !moved {
+                    break;
+                }
+            }
+
+            while {
+                let moved = self.board.move_active_piece_down();
+                self.update_view();
+                moved
+            } {}
+        }
     }
 
     pub fn update_view(&self) {
