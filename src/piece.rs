@@ -3,7 +3,7 @@ extern crate rand;
 use self::rand::Rng;
 
 const SPAWN_POS_X: u32 = 5;
-const SPAWN_POS_Y: u32 = 5;
+const SPAWN_POS_Y: u32 = 1;
 
 pub struct Piece {
     piece_id: u32,
@@ -18,7 +18,7 @@ pub struct Piece {
 
 impl Piece {
     pub fn new_random() -> Piece {
-        let id = rand::thread_rng().gen_range(0, 8);
+        let id = rand::thread_rng().gen_range(1, 8);
         Piece::spawn_piece(id)
     }
 
@@ -79,7 +79,7 @@ impl Piece {
     }
 
     pub fn spawn_piece(id: u32) -> Piece {
-        Piece::spawn_and_place_piece(id, SPAWN_POS_X, SPAWN_POS_X)
+        Piece::spawn_and_place_piece(id, SPAWN_POS_X, SPAWN_POS_Y)
     }
 
     pub fn spawn_and_place_piece(id: u32, x: u32, y: u32) -> Piece {

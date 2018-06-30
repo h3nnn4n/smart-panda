@@ -197,6 +197,7 @@ impl Board {
                     self.update_board();
                     true
                 } else {
+                    self.sleep_active_piece(i);
                     false
                 }
             }

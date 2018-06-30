@@ -1,4 +1,5 @@
 use board;
+use std::{thread, time};
 
 pub struct GameState {
     points: u32,
@@ -50,5 +51,11 @@ impl GameState {
         let cleared_lines = self.board.clear_lines();
         self.lines_cleared += cleared_lines;
         cleared_lines
+    }
+
+    pub fn update_view(&self) {
+        print!("{}[2J", 27 as char);
+        self.print_board();
+        thread::sleep(time::Duration::from_millis(160));
     }
 }

@@ -1,3 +1,6 @@
+extern crate rand;
+
+use rand::Rng;
 use std::{thread, time};
 
 mod board;
@@ -6,40 +9,40 @@ mod piece;
 
 pub fn main() {
     let mut game = gamestate::GameState::new();
+    let mut rng = rand::thread_rng();
+
     game.set_board_size(10, 18);
-    //game.spawn_random_piece();
-    game.spawn_piece(1);
-    //game.spawn_piece(2);
-    //game.spawn_piece(3);
-    //game.spawn_piece(4);
-    //game.spawn_piece(5);
-    //game.spawn_piece(6);
-    //game.spawn_piece(7);
-    //game.print_board();
 
-    for _ in 0..0 {
-        print!("{}[2J", 27 as char);
-        game.print_board();
-        thread::sleep(time::Duration::from_millis(160));
+    loop {
+        game.spawn_random_piece();
+        let direction = rng.gen_range(0, 2);
+        let amount = rng.gen_range(0, 5);
+        let rotation = rng.gen_range(0, 4);
 
-        game.board.rotate_active_piece_right();
-    }
-
-    for _ in 0..5 {
-        print!("{}[2J", 27 as char);
-        game.print_board();
-        thread::sleep(time::Duration::from_millis(160));
-
-        //game.step();
-
-        let moved = game.board.move_active_piece_right();
-        if !moved {
-            break;
+        for _ in 0..rotation {
+            game.board.rotate_active_piece_right();
+            game.update_view();
         }
 
-        //if game.has_active_piece() {
-        //game.spawn_piece(2);
-        //}
+        for _ in 0..amount {
+            let moved = match direction {
+                0 => game.board.move_active_piece_left(),
+                1 => game.board.move_active_piece_right(),
+                _ => unreachable!(),
+            };
+
+            game.update_view();
+
+            if !moved {
+                break;
+            }
+        }
+
+        while {
+            let moved = game.board.move_active_piece_down();
+            game.update_view();
+            moved
+        } {}
     }
 
     for _ in 0..20 {
