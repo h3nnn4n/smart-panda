@@ -79,15 +79,19 @@ impl Piece {
     }
 
     pub fn spawn_piece(id: u32) -> Piece {
+        Piece::spawn_and_place_piece(id, SPAWN_POS_X, SPAWN_POS_X)
+    }
+
+    pub fn spawn_and_place_piece(id: u32, x: u32, y: u32) -> Piece {
         match id {
-            1 => Piece::i_piece(),
-            2 => Piece::o_piece(),
-            3 => Piece::l_piece(),
-            4 => Piece::j_piece(),
-            5 => Piece::z_piece(),
-            6 => Piece::s_piece(),
-            7 => Piece::t_piece(),
-            _ => Piece::o_piece(),
+            1 => Piece::i_piece(x, y),
+            2 => Piece::o_piece(x, y),
+            3 => Piece::l_piece(x, y),
+            4 => Piece::j_piece(x, y),
+            5 => Piece::z_piece(x, y),
+            6 => Piece::s_piece(x, y),
+            7 => Piece::t_piece(x, y),
+            _ => unreachable!(),
         }
     }
 
@@ -95,11 +99,11 @@ impl Piece {
         self.body = self.rotation_matrix[self.rotation as usize];
     }
 
-    fn i_piece() -> Piece {
+    fn i_piece(x: u32, y: u32) -> Piece {
         Piece {
             piece_id: 1,
-            posx: SPAWN_POS_X,
-            posy: SPAWN_POS_Y,
+            posx: x,
+            posy: y,
             active: true,
             rotation: 0,
             rotation_freedom: 2,
@@ -113,11 +117,11 @@ impl Piece {
         }
     }
 
-    fn o_piece() -> Piece {
+    fn o_piece(x: u32, y: u32) -> Piece {
         Piece {
             piece_id: 2,
-            posx: SPAWN_POS_X,
-            posy: SPAWN_POS_Y,
+            posx: x,
+            posy: y,
             active: true,
             rotation: 0,
             rotation_freedom: 1,
@@ -131,11 +135,11 @@ impl Piece {
         }
     }
 
-    fn l_piece() -> Piece {
+    fn l_piece(x: u32, y: u32) -> Piece {
         Piece {
             piece_id: 3,
-            posx: SPAWN_POS_X,
-            posy: SPAWN_POS_Y,
+            posx: x,
+            posy: y,
             active: true,
             rotation: 0,
             rotation_freedom: 4,
@@ -149,11 +153,11 @@ impl Piece {
         }
     }
 
-    fn j_piece() -> Piece {
+    fn j_piece(x: u32, y: u32) -> Piece {
         Piece {
             piece_id: 4,
-            posx: SPAWN_POS_X,
-            posy: SPAWN_POS_Y,
+            posx: x,
+            posy: y,
             active: true,
             rotation: 0,
             rotation_freedom: 4,
@@ -167,11 +171,11 @@ impl Piece {
         }
     }
 
-    fn z_piece() -> Piece {
+    fn z_piece(x: u32, y: u32) -> Piece {
         Piece {
             piece_id: 5,
-            posx: SPAWN_POS_X,
-            posy: SPAWN_POS_Y,
+            posx: x,
+            posy: y,
             active: true,
             rotation: 0,
             rotation_freedom: 2,
@@ -185,11 +189,11 @@ impl Piece {
         }
     }
 
-    fn s_piece() -> Piece {
+    fn s_piece(x: u32, y: u32) -> Piece {
         Piece {
             piece_id: 6,
-            posx: SPAWN_POS_X,
-            posy: SPAWN_POS_Y,
+            posx: x,
+            posy: y,
             active: true,
             rotation: 0,
             rotation_freedom: 2,
@@ -203,11 +207,11 @@ impl Piece {
         }
     }
 
-    fn t_piece() -> Piece {
+    fn t_piece(x: u32, y: u32) -> Piece {
         Piece {
             piece_id: 7,
-            posx: SPAWN_POS_X,
-            posy: SPAWN_POS_Y,
+            posx: x,
+            posy: y,
             active: true,
             rotation: 0,
             rotation_freedom: 4,

@@ -69,6 +69,12 @@ impl Board {
         println!("+ ");
     }
 
+    pub fn spawn_and_place_piece(&mut self, id: u32, x: u32, y: u32) {
+        let new_piece = piece::Piece::spawn_and_place_piece(id, x, y);
+        self.pieces.push(new_piece);
+        self.update_board();
+    }
+
     pub fn spawn_piece(&mut self, id: u32) {
         let new_piece = piece::Piece::spawn_piece(id);
         self.pieces.push(new_piece);
@@ -195,6 +201,57 @@ impl Board {
                 }
             }
         }
+    }
+
+    pub fn clearable_lines(&self) -> u32 {
+        let mut clearable = 0_u32;
+        for i in 0..self.height {
+            let mut can_clear = true;
+            for j in 0..self.width {
+                if self.get_piece(j, i) == 0 {
+                    can_clear = false;
+                    break;
+                }
+            }
+
+            if can_clear {
+                clearable += 1;
+            }
+        }
+
+        clearable
+    }
+
+    pub fn clear_lines(&mut self) -> u32 {
+        let mut cleared = 0_u32;
+        for i in 0..self.height - 0 {
+            let mut can_clear = true;
+            for j in 0..self.width {
+                if self.get_piece(j, i) == 0 {
+                    can_clear = false;
+                    break;
+                }
+            }
+
+            if can_clear {
+                for j in (i - 1)..(self.height - 0) {
+                    for x in 0..self.width {
+                        let w = self.get_piece(x, j - 1);
+                        self.place_piece(x, j, w, false);
+                        self.place_piece(x, j - 1, 0, false);
+                    }
+                }
+                cleared += 1;
+            }
+        }
+
+        cleared
+    }
+
+    pub fn place_o_piece(&mut self, x: u32, y: u32) -> bool {
+        self.spawn_and_place_piece(2, x, y);
+
+        true
     }
 
     fn can_active_piece_move_right(&self, i: usize) -> bool {
