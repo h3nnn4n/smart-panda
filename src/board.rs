@@ -234,14 +234,14 @@ impl Board {
             }
 
             if can_clear {
-                for j in (i - 1)..(self.height - 0) {
+                for j in i..self.height {
+                    cleared += 1;
                     for x in 0..self.width {
                         let w = self.get_piece(x, j - 1);
                         self.place_piece(x, j, w, false);
                         self.place_piece(x, j - 1, 0, false);
                     }
                 }
-                cleared += 1;
             }
         }
 
@@ -387,5 +387,60 @@ impl Board {
         let index = (x * self.height + y) as usize;
 
         self.board[index]
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn clearable_lines() {
+        let mut board = Board::new();
+        board.set_board_size(10, 18);
+
+        assert_eq!(0, board.clearable_lines());
+
+        board.place_o_piece(1, 17);
+        board.place_o_piece(3, 17);
+        board.place_o_piece(5, 17);
+        board.place_o_piece(7, 17);
+        assert_eq!(0, board.clearable_lines());
+        board.place_o_piece(9, 17);
+
+        assert_eq!(2, board.clearable_lines());
+
+        board.place_o_piece(1, 15);
+        board.place_o_piece(3, 15);
+        board.place_o_piece(5, 15);
+        board.place_o_piece(7, 15);
+        assert_eq!(2, board.clearable_lines());
+        board.place_o_piece(9, 15);
+
+        assert_eq!(4, board.clearable_lines());
+    }
+
+    #[test]
+    fn clear_lines() {
+        let mut board = Board::new();
+        board.set_board_size(10, 18);
+
+        //assert_eq!(0, board.clear_lines());
+
+        board.place_o_piece(1, 17);
+        board.place_o_piece(3, 17);
+        board.place_o_piece(5, 17);
+        board.place_o_piece(7, 17);
+        board.place_o_piece(9, 17);
+
+        board.place_o_piece(1, 15);
+        board.place_o_piece(3, 15);
+        board.place_o_piece(5, 15);
+        board.place_o_piece(7, 15);
+        board.place_o_piece(9, 15);
+
+        assert_eq!(4, board.clearable_lines());
+        assert_eq!(4, board.clear_lines());
+        assert_eq!(0, board.clearable_lines());
     }
 }

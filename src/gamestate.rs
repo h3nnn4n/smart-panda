@@ -45,4 +45,10 @@ impl GameState {
     pub fn step(&mut self) {
         self.board.step();
     }
+
+    pub fn clear_lines(&mut self) -> u32 {
+        let cleared_lines = self.board.clear_lines();
+        self.lines_cleared += cleared_lines;
+        cleared_lines
+    }
 }
