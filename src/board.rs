@@ -4,7 +4,7 @@ pub struct Board {
     width: u32,
     height: u32,
     board: Vec<u32>,
-    pieces: Vec<piece::Piece>,
+    active_piece: Option<piece::Piece>,
 }
 
 impl Board {
@@ -13,7 +13,7 @@ impl Board {
             width: 0,
             height: 0,
             board: Vec::new(),
-            pieces: Vec::new(),
+            active_piece: None,
         }
     }
 
@@ -33,12 +33,12 @@ impl Board {
         self.width = 0;
         self.height = 0;
         self.board.clear();
-        self.pieces.clear();
+        self.active_piece = None;
     }
 
     pub fn spawn_random_piece(&mut self) {
         let new_piece = piece::Piece::new_random();
-        self.pieces.push(new_piece);
+        self.active_piece = Some(new_piece);
         self.update();
     }
 
@@ -73,23 +73,21 @@ impl Board {
 
     pub fn spawn_and_place_piece(&mut self, id: u32, x: u32, y: u32) {
         let new_piece = piece::Piece::spawn_and_place_piece(id, x, y);
-        self.pieces.push(new_piece);
+        self.active_piece = Some(new_piece);
         self.sleep_active_piece();
     }
 
     pub fn spawn_piece(&mut self, id: u32) {
         let new_piece = piece::Piece::spawn_piece(id);
-        self.pieces.push(new_piece);
+        self.active_piece = Some(new_piece);
         self.update();
     }
 
     pub fn step(&mut self) {
-        let active = self.get_active_piece_index();
-
-        match active {
+        match self.active_piece {
             None => (),
-            Some(i) => {
-                if self.can_active_piece_move_down(i) {
+            Some(_) => {
+                if self.can_active_piece_move_down() {
                     self.move_active_piece_down();
                 } else {
                     self.sleep_active_piece();
@@ -99,10 +97,8 @@ impl Board {
         }
     }
 
-    pub fn has_active_piece(&mut self) -> bool {
-        let active = self.get_active_piece_index();
-
-        match active {
+    pub fn has_active_piece(&self) -> bool {
+        match self.active_piece {
             Some(_) => true,
             None => false,
         }
@@ -111,102 +107,94 @@ impl Board {
     fn sleep_active_piece(&mut self) {
         if self.has_active_piece() {
             self.place_active_piece_and_sleep();
-            self.pieces.pop();
+            self.active_piece = None;
         }
     }
 
-    fn can_active_piece_rotate_left(&self, i: usize) -> bool {
+    fn can_active_piece_rotate_left(&self) -> bool {
+        if let None = self.active_piece {
+            return false;
+        }
+
         true // FIXME
     }
 
-    fn can_active_piece_rotate_right(&self, i: usize) -> bool {
+    fn can_active_piece_rotate_right(&self) -> bool {
+        if let None = self.active_piece {
+            return false;
+        }
+
         true // FIXME
     }
 
     pub fn rotate_active_piece_left(&mut self) -> bool {
-        let active = self.get_active_piece_index();
-
-        match active {
-            None => return false,
-            Some(i) => {
-                if self.can_active_piece_rotate_left(i) {
-                    self.pieces[i].rotate_left();
-                    self.update();
-                    true
-                } else {
-                    false
-                }
-            }
+        if !self.can_active_piece_rotate_left() {
+            return false;
         }
+
+        if let Some(ref mut active_piece) = self.active_piece {
+            active_piece.rotate_left();
+        }
+
+        self.update();
+
+        true
     }
 
     pub fn rotate_active_piece_right(&mut self) -> bool {
-        let active = self.get_active_piece_index();
-
-        match active {
-            None => return false,
-            Some(i) => {
-                if self.can_active_piece_rotate_right(i) {
-                    self.pieces[i].rotate_right();
-                    self.update();
-                    true
-                } else {
-                    false
-                }
-            }
+        if !self.can_active_piece_rotate_right() {
+            return false;
         }
+
+        if let Some(ref mut active_piece) = self.active_piece {
+            active_piece.rotate_right();
+        }
+
+        self.update();
+
+        true
     }
 
     pub fn move_active_piece_right(&mut self) -> bool {
-        let active = self.get_active_piece_index();
-
-        match active {
-            None => return false,
-            Some(i) => {
-                if self.can_active_piece_move_right(i) {
-                    self.pieces[i].move_right();
-                    self.update();
-                    true
-                } else {
-                    false
-                }
-            }
+        if !self.can_active_piece_move_right() {
+            return false;
         }
+
+        if let Some(ref mut active_piece) = self.active_piece {
+            active_piece.move_right();
+        }
+
+        self.update();
+
+        true
     }
 
     pub fn move_active_piece_left(&mut self) -> bool {
-        let active = self.get_active_piece_index();
-
-        match active {
-            None => return false,
-            Some(i) => {
-                if self.can_active_piece_move_left(i) {
-                    self.pieces[i].move_left();
-                    self.update();
-                    true
-                } else {
-                    false
-                }
-            }
+        if !self.can_active_piece_move_left() {
+            return false;
         }
+
+        if let Some(ref mut active_piece) = self.active_piece {
+            active_piece.move_left();
+        }
+
+        self.update();
+
+        true
     }
 
     pub fn move_active_piece_down(&mut self) -> bool {
-        let active = self.get_active_piece_index();
-
-        match active {
-            None => return false,
-            Some(i) => {
-                if self.can_active_piece_move_down(i) {
-                    self.pieces[i].move_down();
-                    self.update();
-                    true
-                } else {
-                    self.sleep_active_piece();
-                    false
-                }
-            }
+        if !self.can_active_piece_move_down() {
+            return false;
         }
+
+        if let Some(ref mut active_piece) = self.active_piece {
+            active_piece.move_down();
+        }
+
+        self.update();
+
+        true
     }
 
     pub fn clearable_lines(&self) -> u32 {
@@ -260,100 +248,104 @@ impl Board {
         true
     }
 
-    fn can_active_piece_move_right(&self, i: usize) -> bool {
+    fn can_active_piece_move_right(&self) -> bool {
+        if let None = self.active_piece {
+            return false;
+        }
+
         let x_limit = self.width;
 
-        for j in 0..4 {
-            let (x_, y_) = self.pieces[i].get_body()[j];
-            let (x, y) = (
-                x_ + self.pieces[i].get_x() as i32,
-                y_ + self.pieces[i].get_y() as i32,
-            );
+        if let Some(ref active_piece) = self.active_piece {
+            for j in 0..4 {
+                let (x_, y_) = active_piece.get_body()[j];
+                let (x, y) = (
+                    x_ + active_piece.get_x() as i32,
+                    y_ + active_piece.get_y() as i32,
+                );
 
-            if x + 1 >= x_limit as i32 {
-                return false;
-            }
+                if x + 1 >= x_limit as i32 {
+                    return false;
+                }
 
-            let piece_id = self.pieces[i].get_id();
-            let is_active = self.pieces[i].is_active();
+                let piece_id = active_piece.get_id();
+                let is_active = active_piece.is_active();
 
-            let piece_piece = self.get_block((x + 1) as u32, x as u32);
-            if piece_piece > 0 && piece_piece < 127 {
-                return false;
+                let piece_piece = self.get_block((x + 1) as u32, x as u32);
+                if piece_piece > 0 && piece_piece < 127 {
+                    return false;
+                }
             }
         }
 
         true
     }
 
-    fn can_active_piece_move_left(&self, i: usize) -> bool {
+    fn can_active_piece_move_left(&self) -> bool {
+        if let None = self.active_piece {
+            return false;
+        }
+
         let x_limit = 0;
 
-        for j in 0..4 {
-            let (x_, y_) = self.pieces[i].get_body()[j];
-            let (x, y) = (
-                x_ + self.pieces[i].get_x() as i32,
-                y_ + self.pieces[i].get_y() as i32,
-            );
+        if let Some(ref active_piece) = self.active_piece {
+            for j in 0..4 {
+                let (x_, y_) = active_piece.get_body()[j];
+                let (x, y) = (
+                    x_ + active_piece.get_x() as i32,
+                    y_ + active_piece.get_y() as i32,
+                );
 
-            if x <= x_limit as i32 {
-                return false;
-            }
+                if x <= x_limit as i32 {
+                    return false;
+                }
 
-            let piece_id = self.pieces[i].get_id();
-            let is_active = self.pieces[i].is_active();
+                let piece_id = active_piece.get_id();
+                let is_active = active_piece.is_active();
 
-            let piece_piece = self.get_block((x - 1) as u32, x as u32);
-            if piece_piece > 0 && piece_piece < 127 {
-                return false;
+                let piece_piece = self.get_block((x - 1) as u32, x as u32);
+                if piece_piece > 0 && piece_piece < 127 {
+                    return false;
+                }
             }
         }
 
         true
     }
 
-    fn can_active_piece_move_down(&self, i: usize) -> bool {
+    fn can_active_piece_move_down(&self) -> bool {
+        if let None = self.active_piece {
+            return false;
+        }
+
         let y_limit = self.height;
 
-        for j in 0..4 {
-            let (x_, y_) = self.pieces[i].get_body()[j];
-            let (x, y) = (
-                x_ + self.pieces[i].get_x() as i32,
-                y_ + self.pieces[i].get_y() as i32,
-            );
+        if let Some(ref active_piece) = self.active_piece {
+            for j in 0..4 {
+                let (x_, y_) = active_piece.get_body()[j];
+                let (x, y) = (
+                    x_ + active_piece.get_x() as i32,
+                    y_ + active_piece.get_y() as i32,
+                );
 
-            if y + 1 >= y_limit as i32 {
-                return false;
-            }
+                if y + 1 >= y_limit as i32 {
+                    return false;
+                }
 
-            let piece_id = self.pieces[i].get_id();
-            let is_active = self.pieces[i].is_active();
+                let piece_id = active_piece.get_id();
+                let is_active = active_piece.is_active();
 
-            let piece_piece = self.get_block(x as u32, (y + 1) as u32);
-            if piece_piece > 0 && piece_piece < 127 {
-                return false;
+                let piece_piece = self.get_block(x as u32, (y + 1) as u32);
+                if piece_piece > 0 && piece_piece < 127 {
+                    return false;
+                }
             }
         }
 
         true
-    }
-
-    fn get_active_piece_index(&self) -> Option<usize> {
-        if self.pieces.len() == 0 {
-            return None;
-        }
-
-        for i in 0..self.pieces.len() {
-            if self.pieces[i].is_active() {
-                return Some(i);
-            }
-        }
-
-        return None;
     }
 
     fn remove_active_piece(&mut self) -> u32 {
-        match self.get_active_piece_index() {
+        match self.active_piece {
             Some(_) => {
                 let mut blocks_removed = 0;
                 for x in 0..self.width {
@@ -374,42 +366,63 @@ impl Board {
     }
 
     fn place_active_piece_and_sleep(&mut self) -> bool {
-        match self.get_active_piece_index() {
-            Some(i) => {
-                for j in 0..4 {
-                    let (x_, y_) = self.pieces[i].get_body()[j];
-                    let (x, y) = (
-                        x_ + self.pieces[i].get_x() as i32,
-                        y_ + self.pieces[i].get_y() as i32,
-                    );
-                    let piece_id = self.pieces[i].get_id();
-                    self.place_block(x as u32, y as u32, piece_id, false);
-                }
-
-                true
-            }
-            None => false,
+        if let None = self.active_piece {
+            return false;
         }
+
+        let mut moves: [(i32, i32); 4] = [(0, 0), (0, 0), (0, 0), (0, 0)];
+        let mut piece_id = 0;
+
+        if let Some(ref active_piece) = self.active_piece {
+            piece_id = active_piece.get_id();
+
+            for j in 0..4 {
+                let (x_, y_) = active_piece.get_body()[j];
+                let (x, y) = (
+                    x_ + active_piece.get_x() as i32,
+                    y_ + active_piece.get_y() as i32,
+                );
+
+                moves[0] = (x, y);
+            }
+        }
+
+        for i in 0..4 {
+            let (x, y) = moves[i];
+            self.place_block(x as u32, y as u32, piece_id, false);
+        }
+
+        true
     }
 
     fn place_active_piece(&mut self) -> bool {
-        match self.get_active_piece_index() {
-            Some(i) => {
-                for j in 0..4 {
-                    let (x_, y_) = self.pieces[i].get_body()[j];
-                    let (x, y) = (
-                        x_ + self.pieces[i].get_x() as i32,
-                        y_ + self.pieces[i].get_y() as i32,
-                    );
-                    let piece_id = self.pieces[i].get_id();
-                    let is_active = self.pieces[i].is_active();
-                    self.place_block(x as u32, y as u32, piece_id, is_active);
-                }
-
-                true
-            }
-            None => false,
+        if let None = self.active_piece {
+            return false;
         }
+
+        let mut moves: [(i32, i32); 4] = [(0, 0), (0, 0), (0, 0), (0, 0)];
+        let mut piece_id = 0;
+
+        if let Some(ref active_piece) = self.active_piece {
+            piece_id = active_piece.get_id();
+
+            for j in 0..4 {
+                let (x_, y_) = active_piece.get_body()[j];
+                let (x, y) = (
+                    x_ + active_piece.get_x() as i32,
+                    y_ + active_piece.get_y() as i32,
+                );
+
+                moves[0] = (x, y);
+            }
+        }
+
+        for i in 0..4 {
+            let (x, y) = moves[i];
+            self.place_block(x as u32, y as u32, piece_id, true);
+        }
+
+        true
     }
 
     fn update_active_piece(&mut self) {
