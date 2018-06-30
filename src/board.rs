@@ -30,6 +30,8 @@ impl Board {
     }
 
     pub fn reset(&mut self) {
+        self.width = 0;
+        self.height = 0;
         self.board.clear();
         self.pieces.clear();
     }
@@ -420,8 +422,6 @@ impl Board {
     }
 
     fn clear_board(&mut self) {
-        unreachable!(); // FIXME
-
         assert_eq!(self.board.len() as u32, self.width * self.height);
 
         for i in 0..self.width {
@@ -461,35 +461,168 @@ impl Board {
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn spawn_and_place_piece() {
-        fn count_active_pieces(board: &Board) -> u32 {
-            let mut count = 0;
-            for x in 0..10 {
-                for y in 0..18 {
-                    if board.get_block(x, y) > 0 {
-                        count += 1;
-                    }
+    fn count_active_blocks(board: &Board) -> u32 {
+        let mut count = 0;
+        for x in 0..10 {
+            for y in 0..18 {
+                if board.get_block(x, y) > 0 {
+                    count += 1;
                 }
             }
-
-            count
         }
 
+        count
+    }
+
+    #[test]
+    fn new() {
+        let mut board = Board::new();
+
+        assert_eq!(0, board.width);
+        assert_eq!(0, board.height);
+        assert_eq!(0, board.board.len());
+        assert_eq!(0, board.pieces.len());
+    }
+
+    #[test]
+    fn set_board_size() {
+        let mut board = Board::new();
+
+        assert_eq!(0, board.width);
+        assert_eq!(0, board.height);
+
+        board.set_board_size(10, 18);
+
+        assert_eq!(10, board.width);
+        assert_eq!(18, board.height);
+    }
+
+    #[test]
+    fn place_block() {
         let mut board = Board::new();
 
         board.set_board_size(10, 18);
-        assert_eq!(0, count_active_pieces(&board));
+        assert_eq!(0, count_active_blocks(&board));
 
-        board.place_o_piece(1, 17);
-        assert_eq!(4, count_active_pieces(&board));
+        board.place_block(1, 1, 1, false);
+        assert_eq!(1, count_active_blocks(&board));
+
+        board.place_block(2, 1, 1, false);
+        assert_eq!(2, count_active_blocks(&board));
+
+        board.place_block(2, 2, 1, false);
+        assert_eq!(3, count_active_blocks(&board));
+
+        board.place_block(1, 2, 1, false);
+        assert_eq!(4, count_active_blocks(&board));
+    }
+
+    #[test]
+    fn get_block() {
+        let mut board = Board::new();
+
+        board.set_board_size(10, 18);
 
         board.place_o_piece(3, 17);
-        assert_eq!(8, count_active_pieces(&board));
+
+        assert!(board.get_block(3, 17) > 0);
+        assert!(board.get_block(6, 17) == 0);
+    }
+
+    #[test]
+    fn remove_block() {
+        let mut board = Board::new();
+
+        board.set_board_size(10, 18);
+
+        board.place_o_piece(1, 17);
+        board.place_o_piece(3, 17);
+
+        assert_eq!(8, count_active_blocks(&board));
+
+        board.remove_block(1, 17);
+        assert_eq!(7, count_active_blocks(&board));
+
+        board.remove_block(0, 17);
+        assert_eq!(6, count_active_blocks(&board));
+
+        board.remove_block(1, 16);
+        assert_eq!(5, count_active_blocks(&board));
+
+        board.remove_block(0, 16);
+        assert_eq!(4, count_active_blocks(&board));
+    }
+
+    #[test]
+    fn spawn_and_place_piece() {
+        let mut board = Board::new();
+
+        board.set_board_size(10, 18);
+        assert_eq!(0, count_active_blocks(&board));
+
+        board.place_o_piece(1, 17);
+        assert_eq!(4, count_active_blocks(&board));
+
+        board.place_o_piece(3, 17);
+        assert_eq!(8, count_active_blocks(&board));
 
         board.place_o_piece(5, 17);
-        assert_eq!(12, count_active_pieces(&board));
+        assert_eq!(12, count_active_blocks(&board));
+    }
+
+    #[test]
+    fn clear_board() {
+        let mut board = Board::new();
+
+        board.set_board_size(10, 18);
+
+        board.place_o_piece(1, 17);
+        board.place_o_piece(3, 17);
+        board.place_o_piece(5, 17);
+        board.place_o_piece(7, 17);
+        board.place_o_piece(9, 17);
+
+        assert_eq!(20, count_active_blocks(&board));
+
+        board.clear_board();
+
+        assert_eq!(0, count_active_blocks(&board));
+        assert_eq!(10, board.width);
+        assert_eq!(18, board.height);
+    }
+
+    #[test]
+    fn has_active_piece() {
+        let mut board = Board::new();
+
+        board.set_board_size(10, 18);
+
+        assert!(board.has_active_piece() == false);
+        board.spawn_random_piece();
+        assert!(board.has_active_piece());
+
+        while { board.move_active_piece_down() } {}
+
+        assert!(board.has_active_piece() == false);
+    }
+
+    #[test]
+    fn reset() {
+        let mut board = Board::new();
+
+        board.set_board_size(10, 18);
+
+        board.place_o_piece(1, 17);
+        board.place_o_piece(3, 17);
+        board.spawn_random_piece();
+        assert_eq!(12, count_active_blocks(&board));
+        assert_eq!(1, board.pieces.len());
+
+        board.reset();
+        assert_eq!(0, board.pieces.len());
+        assert_eq!(0, board.board.len());
+        assert_eq!(0, board.height);
+        assert_eq!(0, board.width);
     }
 
     #[test]
