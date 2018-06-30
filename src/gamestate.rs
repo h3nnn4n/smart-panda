@@ -56,6 +56,7 @@ impl GameState {
     pub fn update_view(&self) {
         print!("{}[2J", 27 as char);
         self.print_board();
-        thread::sleep(time::Duration::from_millis(160));
+        thread::sleep(time::Duration::from_millis(80));
+        //thread::sleep(time::Duration::from_millis(160));
     }
 }

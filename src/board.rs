@@ -37,7 +37,7 @@ impl Board {
     pub fn spawn_random_piece(&mut self) {
         let new_piece = piece::Piece::new_random();
         self.pieces.push(new_piece);
-        self.update_board();
+        self.update();
     }
 
     pub fn print_board(&self) {
@@ -50,7 +50,7 @@ impl Board {
         for j in 0..self.height {
             print!("{:4}  |", j + 1);
             for i in 0..self.width {
-                let c = match self.get_piece(i, j) {
+                let c = match self.get_block(i, j) {
                     0 => ' ',
                     1...126 => 'O',
                     _ => 'X',
@@ -72,13 +72,13 @@ impl Board {
     pub fn spawn_and_place_piece(&mut self, id: u32, x: u32, y: u32) {
         let new_piece = piece::Piece::spawn_and_place_piece(id, x, y);
         self.pieces.push(new_piece);
-        self.update_board();
+        self.sleep_active_piece();
     }
 
     pub fn spawn_piece(&mut self, id: u32) {
         let new_piece = piece::Piece::spawn_piece(id);
         self.pieces.push(new_piece);
-        self.update_board();
+        self.update();
     }
 
     pub fn step(&mut self) {
@@ -90,8 +90,8 @@ impl Board {
                 if self.can_active_piece_move_down(i) {
                     self.move_active_piece_down();
                 } else {
-                    self.sleep_active_piece(i);
-                    self.update_board();
+                    self.sleep_active_piece();
+                    self.update();
                 }
             }
         }
@@ -101,13 +101,16 @@ impl Board {
         let active = self.get_active_piece_index();
 
         match active {
-            None => true,
-            Some(_) => false,
+            Some(_) => true,
+            None => false,
         }
     }
 
-    fn sleep_active_piece(&mut self, i: usize) {
-        self.pieces[i].sleep();
+    fn sleep_active_piece(&mut self) {
+        if self.has_active_piece() {
+            self.place_active_piece_and_sleep();
+            self.pieces.pop();
+        }
     }
 
     fn can_active_piece_rotate_left(&self, i: usize) -> bool {
@@ -126,7 +129,7 @@ impl Board {
             Some(i) => {
                 if self.can_active_piece_rotate_left(i) {
                     self.pieces[i].rotate_left();
-                    self.update_board();
+                    self.update();
                     true
                 } else {
                     false
@@ -143,7 +146,7 @@ impl Board {
             Some(i) => {
                 if self.can_active_piece_rotate_right(i) {
                     self.pieces[i].rotate_right();
-                    self.update_board();
+                    self.update();
                     true
                 } else {
                     false
@@ -160,7 +163,7 @@ impl Board {
             Some(i) => {
                 if self.can_active_piece_move_right(i) {
                     self.pieces[i].move_right();
-                    self.update_board();
+                    self.update();
                     true
                 } else {
                     false
@@ -177,7 +180,7 @@ impl Board {
             Some(i) => {
                 if self.can_active_piece_move_left(i) {
                     self.pieces[i].move_left();
-                    self.update_board();
+                    self.update();
                     true
                 } else {
                     false
@@ -194,10 +197,10 @@ impl Board {
             Some(i) => {
                 if self.can_active_piece_move_down(i) {
                     self.pieces[i].move_down();
-                    self.update_board();
+                    self.update();
                     true
                 } else {
-                    self.sleep_active_piece(i);
+                    self.sleep_active_piece();
                     false
                 }
             }
@@ -209,7 +212,7 @@ impl Board {
         for i in 0..self.height {
             let mut can_clear = true;
             for j in 0..self.width {
-                if self.get_piece(j, i) == 0 {
+                if self.get_block(j, i) == 0 {
                     can_clear = false;
                     break;
                 }
@@ -228,7 +231,7 @@ impl Board {
         for i in 0..self.height - 0 {
             let mut can_clear = true;
             for j in 0..self.width {
-                if self.get_piece(j, i) == 0 {
+                if self.get_block(j, i) == 0 {
                     can_clear = false;
                     break;
                 }
@@ -238,9 +241,9 @@ impl Board {
                 for j in i..self.height {
                     cleared += 1;
                     for x in 0..self.width {
-                        let w = self.get_piece(x, j - 1);
-                        self.place_piece(x, j, w, false);
-                        self.place_piece(x, j - 1, 0, false);
+                        let w = self.get_block(x, j - 1);
+                        self.place_block(x, j, w, false);
+                        self.place_block(x, j - 1, 0, false);
                     }
                 }
             }
@@ -272,7 +275,7 @@ impl Board {
             let piece_id = self.pieces[i].get_id();
             let is_active = self.pieces[i].is_active();
 
-            let piece_piece = self.get_piece((x + 1) as u32, x as u32);
+            let piece_piece = self.get_block((x + 1) as u32, x as u32);
             if piece_piece > 0 && piece_piece < 127 {
                 return false;
             }
@@ -298,7 +301,7 @@ impl Board {
             let piece_id = self.pieces[i].get_id();
             let is_active = self.pieces[i].is_active();
 
-            let piece_piece = self.get_piece((x - 1) as u32, x as u32);
+            let piece_piece = self.get_block((x - 1) as u32, x as u32);
             if piece_piece > 0 && piece_piece < 127 {
                 return false;
             }
@@ -324,7 +327,7 @@ impl Board {
             let piece_id = self.pieces[i].get_id();
             let is_active = self.pieces[i].is_active();
 
-            let piece_piece = self.get_piece(x as u32, (y + 1) as u32);
+            let piece_piece = self.get_block(x as u32, (y + 1) as u32);
             if piece_piece > 0 && piece_piece < 127 {
                 return false;
             }
@@ -347,34 +350,92 @@ impl Board {
         return None;
     }
 
-    fn update_board(&mut self) {
-        self.clear_board();
+    fn remove_active_piece(&mut self) -> u32 {
+        match self.get_active_piece_index() {
+            Some(_) => {
+                let mut blocks_removed = 0;
+                for x in 0..self.width {
+                    for y in 0..self.height {
+                        if self.get_block(x, y) > 126 {
+                            self.remove_block(x, y);
+                            blocks_removed += 1;
+                        }
+                    }
+                }
 
-        for i in 0..self.pieces.len() {
-            for j in 0..4 {
-                let (x_, y_) = self.pieces[i].get_body()[j];
-                let (x, y) = (
-                    x_ + self.pieces[i].get_x() as i32,
-                    y_ + self.pieces[i].get_y() as i32,
-                );
-                let piece_id = self.pieces[i].get_id();
-                let is_active = self.pieces[i].is_active();
-                self.place_piece(x as u32, y as u32, piece_id, is_active);
+                //assert_eq!(4, blocks_removed);
+
+                blocks_removed
             }
+            None => 0,
         }
     }
 
+    fn place_active_piece_and_sleep(&mut self) -> bool {
+        match self.get_active_piece_index() {
+            Some(i) => {
+                for j in 0..4 {
+                    let (x_, y_) = self.pieces[i].get_body()[j];
+                    let (x, y) = (
+                        x_ + self.pieces[i].get_x() as i32,
+                        y_ + self.pieces[i].get_y() as i32,
+                    );
+                    let piece_id = self.pieces[i].get_id();
+                    self.place_block(x as u32, y as u32, piece_id, false);
+                }
+
+                true
+            }
+            None => false,
+        }
+    }
+
+    fn place_active_piece(&mut self) -> bool {
+        match self.get_active_piece_index() {
+            Some(i) => {
+                for j in 0..4 {
+                    let (x_, y_) = self.pieces[i].get_body()[j];
+                    let (x, y) = (
+                        x_ + self.pieces[i].get_x() as i32,
+                        y_ + self.pieces[i].get_y() as i32,
+                    );
+                    let piece_id = self.pieces[i].get_id();
+                    let is_active = self.pieces[i].is_active();
+                    self.place_block(x as u32, y as u32, piece_id, is_active);
+                }
+
+                true
+            }
+            None => false,
+        }
+    }
+
+    fn update_active_piece(&mut self) {
+        self.remove_active_piece();
+        self.place_active_piece();
+    }
+
+    fn update(&mut self) {
+        self.update_active_piece();
+    }
+
     fn clear_board(&mut self) {
+        unreachable!(); // FIXME
+
         assert_eq!(self.board.len() as u32, self.width * self.height);
 
         for i in 0..self.width {
             for j in 0..self.height {
-                self.place_piece(i, j, 0, false);
+                self.place_block(i, j, 0, false);
             }
         }
     }
 
-    fn place_piece(&mut self, x: u32, y: u32, id: u32, active: bool) {
+    fn place_block(&mut self, x: u32, y: u32, id: u32, active: bool) {
+        if y > self.height {
+            return;
+        }
+
         let index = (x * self.height + y) as usize;
 
         self.board[index] = id;
@@ -384,7 +445,13 @@ impl Board {
         }
     }
 
-    fn get_piece(&self, x: u32, y: u32) -> u32 {
+    fn remove_block(&mut self, x: u32, y: u32) {
+        let index = (x * self.height + y) as usize;
+
+        self.board[index] = 0;
+    }
+
+    fn get_block(&self, x: u32, y: u32) -> u32 {
         let index = (x * self.height + y) as usize;
 
         self.board[index]
@@ -394,6 +461,36 @@ impl Board {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn spawn_and_place_piece() {
+        fn count_active_pieces(board: &Board) -> u32 {
+            let mut count = 0;
+            for x in 0..10 {
+                for y in 0..18 {
+                    if board.get_block(x, y) > 0 {
+                        count += 1;
+                    }
+                }
+            }
+
+            count
+        }
+
+        let mut board = Board::new();
+
+        board.set_board_size(10, 18);
+        assert_eq!(0, count_active_pieces(&board));
+
+        board.place_o_piece(1, 17);
+        assert_eq!(4, count_active_pieces(&board));
+
+        board.place_o_piece(3, 17);
+        assert_eq!(8, count_active_pieces(&board));
+
+        board.place_o_piece(5, 17);
+        assert_eq!(12, count_active_pieces(&board));
+    }
 
     #[test]
     fn clearable_lines() {
@@ -409,6 +506,7 @@ mod tests {
         assert_eq!(0, board.clearable_lines());
         board.place_o_piece(9, 17);
 
+        board.print_board();
         assert_eq!(2, board.clearable_lines());
 
         board.place_o_piece(1, 15);
@@ -426,7 +524,7 @@ mod tests {
         let mut board = Board::new();
         board.set_board_size(10, 18);
 
-        //assert_eq!(0, board.clear_lines());
+        assert_eq!(0, board.clear_lines());
 
         board.place_o_piece(1, 17);
         board.place_o_piece(3, 17);
@@ -442,6 +540,24 @@ mod tests {
 
         assert_eq!(4, board.clearable_lines());
         assert_eq!(4, board.clear_lines());
+        assert_eq!(0, board.clearable_lines());
+
+        board.update();
+
+        assert_eq!(0, board.clearable_lines());
+
+        board.place_o_piece(1, 17);
+        board.place_o_piece(3, 17);
+        board.place_o_piece(5, 17);
+        board.place_o_piece(7, 17);
+        board.place_o_piece(9, 17);
+
+        assert_eq!(2, board.clearable_lines());
+        assert_eq!(2, board.clear_lines());
+        assert_eq!(0, board.clearable_lines());
+
+        board.update();
+
         assert_eq!(0, board.clearable_lines());
     }
 }
