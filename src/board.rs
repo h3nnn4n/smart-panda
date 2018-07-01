@@ -91,17 +91,13 @@ impl Board {
                     self.move_active_piece_down();
                 } else {
                     self.sleep_active_piece();
-                    self.update();
                 }
             }
         }
     }
 
     pub fn has_active_piece(&self) -> bool {
-        match self.active_piece {
-            Some(_) => true,
-            None => false,
-        }
+        self.active_piece.is_some()
     }
 
     fn sleep_active_piece(&mut self) {
@@ -383,7 +379,7 @@ impl Board {
                     y_ + active_piece.get_y() as i32,
                 );
 
-                moves[0] = (x, y);
+                moves[j] = (x, y);
             }
         }
 
@@ -413,7 +409,7 @@ impl Board {
                     y_ + active_piece.get_y() as i32,
                 );
 
-                moves[0] = (x, y);
+                moves[j] = (x, y);
             }
         }
 
@@ -494,7 +490,7 @@ mod tests {
         assert_eq!(0, board.width);
         assert_eq!(0, board.height);
         assert_eq!(0, board.board.len());
-        assert_eq!(0, board.pieces.len());
+        assert!(board.active_piece.is_none());
     }
 
     #[test]
@@ -508,6 +504,9 @@ mod tests {
 
         assert_eq!(10, board.width);
         assert_eq!(18, board.height);
+
+        assert_eq!(180, board.board.len());
+        assert!(board.active_piece.is_none());
     }
 
     #[test]
@@ -536,10 +535,16 @@ mod tests {
 
         board.set_board_size(10, 18);
 
-        board.place_o_piece(3, 17);
+        board.place_o_piece(6, 6);
 
-        assert!(board.get_block(3, 17) > 0);
-        assert!(board.get_block(6, 17) == 0);
+        assert!(board.get_block(6, 6) > 0);
+        assert!(board.get_block(6, 5) > 0);
+        assert!(board.get_block(5, 6) > 0);
+        assert!(board.get_block(5, 5) > 0);
+
+        assert!(board.get_block(6, 7) == 0);
+        assert!(board.get_block(7, 6) == 0);
+        assert!(board.get_block(7, 7) == 0);
     }
 
     #[test]
@@ -616,6 +621,7 @@ mod tests {
 
         while { board.move_active_piece_down() } {}
 
+        board.sleep_active_piece();
         assert!(board.has_active_piece() == false);
     }
 
@@ -629,10 +635,10 @@ mod tests {
         board.place_o_piece(3, 17);
         board.spawn_random_piece();
         assert_eq!(12, count_active_blocks(&board));
-        assert_eq!(1, board.pieces.len());
+        assert!(board.active_piece.is_some());
 
         board.reset();
-        assert_eq!(0, board.pieces.len());
+        assert!(board.active_piece.is_none());
         assert_eq!(0, board.board.len());
         assert_eq!(0, board.height);
         assert_eq!(0, board.width);
@@ -652,7 +658,6 @@ mod tests {
         assert_eq!(0, board.clearable_lines());
         board.place_o_piece(9, 17);
 
-        board.print_board();
         assert_eq!(2, board.clearable_lines());
 
         board.place_o_piece(1, 15);
