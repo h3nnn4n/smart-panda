@@ -100,7 +100,7 @@ impl Board {
         self.active_piece.is_some()
     }
 
-    fn sleep_active_piece(&mut self) {
+    pub fn sleep_active_piece(&mut self) {
         if self.has_active_piece() {
             self.place_active_piece_and_sleep();
             self.active_piece = None;
@@ -181,6 +181,23 @@ impl Board {
 
     pub fn move_active_piece_down(&mut self) -> bool {
         if !self.can_active_piece_move_down() {
+            return false;
+        }
+
+        if let Some(ref mut active_piece) = self.active_piece {
+            active_piece.move_down();
+        }
+
+        self.update();
+
+        true
+    }
+
+    pub fn move_active_piece_down_and_try_sleep(&mut self) -> bool {
+        if !self.can_active_piece_move_down() {
+            if self.has_active_piece() {
+                self.sleep_active_piece()
+            }
             return false;
         }
 
@@ -642,6 +659,34 @@ mod tests {
         assert_eq!(0, board.board.len());
         assert_eq!(0, board.height);
         assert_eq!(0, board.width);
+    }
+
+    #[test]
+    fn move_active_piece_down_and_try_sleep() {
+        let mut board = Board::new();
+
+        board.set_board_size(10, 18);
+
+        for i in 0..4 {
+            board.spawn_random_piece();
+
+            while { board.move_active_piece_down_and_try_sleep() } {}
+
+            assert!(!board.has_active_piece());
+
+            assert_eq!((i + 1) * 4, count_active_blocks(&board));
+        }
+
+        let mut found_some_piece = false;
+
+        for x in 0..10 {
+            if board.get_block(x, 17) > 0 {
+                found_some_piece = true;
+                break;
+            }
+        }
+
+        assert!(found_some_piece);
     }
 
     #[test]

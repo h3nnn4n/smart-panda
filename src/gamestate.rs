@@ -87,7 +87,7 @@ impl GameState {
             }
 
             while {
-                let moved = self.board.move_active_piece_down();
+                let moved = self.board.move_active_piece_down_and_try_sleep();
                 self.update_view();
                 moved
             } {}
