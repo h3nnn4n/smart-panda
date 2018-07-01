@@ -36,10 +36,15 @@ impl Board {
         self.active_piece = None;
     }
 
-    pub fn spawn_random_piece(&mut self) {
+    pub fn spawn_random_piece(&mut self) -> bool {
         let new_piece = piece::Piece::new_random();
         self.active_piece = Some(new_piece);
-        self.update();
+        if self.can_active_piece_be_spawned() {
+            self.update();
+            true
+        } else {
+            false
+        }
     }
 
     pub fn print_board(&self) {
@@ -261,6 +266,35 @@ impl Board {
         true
     }
 
+    fn can_active_piece_be_spawned(&self) -> bool {
+        if let None = self.active_piece {
+            return false;
+        }
+
+        let x_limit = self.width;
+
+        if let Some(ref active_piece) = self.active_piece {
+            for j in 0..4 {
+                let (x_, y_) = active_piece.get_body()[j];
+                let (x, y) = (
+                    x_ + active_piece.get_x() as i32,
+                    y_ + active_piece.get_y() as i32,
+                );
+
+                let piece_id = active_piece.get_id();
+                let is_active = active_piece.is_active();
+
+                let piece_piece = self.get_block(x as u32, y as u32);
+
+                if piece_piece > 0 {
+                    return false;
+                }
+            }
+        }
+
+        true
+    }
+
     fn can_active_piece_move_right(&self) -> bool {
         if let None = self.active_piece {
             return false;
@@ -283,7 +317,7 @@ impl Board {
                 let piece_id = active_piece.get_id();
                 let is_active = active_piece.is_active();
 
-                let piece_piece = self.get_block((x + 1) as u32, x as u32);
+                let piece_piece = self.get_block((x + 1) as u32, y as u32);
                 if piece_piece > 0 && piece_piece < 127 {
                     return false;
                 }
@@ -315,7 +349,7 @@ impl Board {
                 let piece_id = active_piece.get_id();
                 let is_active = active_piece.is_active();
 
-                let piece_piece = self.get_block((x - 1) as u32, x as u32);
+                let piece_piece = self.get_block((x - 1) as u32, y as u32);
                 if piece_piece > 0 && piece_piece < 127 {
                     return false;
                 }

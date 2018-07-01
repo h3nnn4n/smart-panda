@@ -62,7 +62,11 @@ impl GameState {
         self.set_board_size(10, 18);
 
         loop {
-            self.spawn_random_piece();
+            if !self.board.spawn_random_piece() {
+                println!("Game over");
+                break;
+            }
+
             let direction = rng.gen_range(0, 2);
             let amount = rng.gen_range(0, 5);
             let rotation = rng.gen_range(0, 4);
