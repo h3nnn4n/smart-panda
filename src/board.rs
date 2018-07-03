@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use piece;
 
 pub struct Board {
@@ -49,7 +51,7 @@ impl Board {
 
     pub fn print_board(&self) {
         print!("      +");
-        for i in 0..self.width {
+        for _ in 0..self.width {
             print!("-");
         }
         println!("+ ");
@@ -70,7 +72,7 @@ impl Board {
         }
 
         print!("      +");
-        for i in 0..self.width {
+        for _ in 0..self.width {
             print!("-");
         }
         println!("+ ");
@@ -271,8 +273,6 @@ impl Board {
             return false;
         }
 
-        let x_limit = self.width;
-
         if let Some(ref active_piece) = self.active_piece {
             for j in 0..4 {
                 let (x_, y_) = active_piece.get_body()[j];
@@ -280,9 +280,6 @@ impl Board {
                     x_ + active_piece.get_x() as i32,
                     y_ + active_piece.get_y() as i32,
                 );
-
-                let piece_id = active_piece.get_id();
-                let is_active = active_piece.is_active();
 
                 let piece_piece = self.get_block(x as u32, y as u32);
 
@@ -314,9 +311,6 @@ impl Board {
                     return false;
                 }
 
-                let piece_id = active_piece.get_id();
-                let is_active = active_piece.is_active();
-
                 let piece_piece = self.get_block((x + 1) as u32, y as u32);
                 if piece_piece > 0 && piece_piece < 127 {
                     return false;
@@ -346,9 +340,6 @@ impl Board {
                     return false;
                 }
 
-                let piece_id = active_piece.get_id();
-                let is_active = active_piece.is_active();
-
                 let piece_piece = self.get_block((x - 1) as u32, y as u32);
                 if piece_piece > 0 && piece_piece < 127 {
                     return false;
@@ -377,9 +368,6 @@ impl Board {
                 if y + 1 >= y_limit as i32 {
                     return false;
                 }
-
-                let piece_id = active_piece.get_id();
-                let is_active = active_piece.is_active();
 
                 let piece_piece = self.get_block(x as u32, (y + 1) as u32);
                 if piece_piece > 0 && piece_piece < 127 {
@@ -536,7 +524,7 @@ mod tests {
 
     #[test]
     fn new() {
-        let mut board = Board::new();
+        let board = Board::new();
 
         assert_eq!(0, board.width);
         assert_eq!(0, board.height);

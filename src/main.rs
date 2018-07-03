@@ -1,8 +1,5 @@
 extern crate rand;
 
-use rand::Rng;
-use std::{thread, time};
-
 mod board;
 mod gamestate;
 mod piece;

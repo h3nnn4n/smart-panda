@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 extern crate rand;
 
 use self::rand::Rng;
@@ -62,10 +64,6 @@ impl Piece {
 
     pub fn rotate_left(&mut self) {
         self.rotation -= 1;
-
-        if self.rotation < 0 {
-            self.rotation = self.rotation_freedom - 1;
-        }
 
         self.update_piece_body()
     }

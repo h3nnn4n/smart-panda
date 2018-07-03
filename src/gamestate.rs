@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 extern crate rand;
 
 use board;
@@ -53,6 +55,7 @@ impl GameState {
     pub fn clear_lines(&mut self) -> u32 {
         let cleared_lines = self.board.clear_lines();
         self.lines_cleared += cleared_lines;
+        self.points += cleared_lines * 4;
         cleared_lines
     }
 
