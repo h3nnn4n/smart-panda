@@ -307,6 +307,10 @@ impl Board {
                     y_ + active_piece.get_y() as i32,
                 );
 
+                if y < 0 {
+                    continue;
+                }
+
                 if x + 1 >= x_limit as i32 {
                     return false;
                 }
@@ -336,6 +340,10 @@ impl Board {
                     y_ + active_piece.get_y() as i32,
                 );
 
+                if y < 0 {
+                    continue;
+                }
+
                 if x <= x_limit as i32 {
                     return false;
                 }
@@ -364,6 +372,10 @@ impl Board {
                     x_ + active_piece.get_x() as i32,
                     y_ + active_piece.get_y() as i32,
                 );
+
+                if y < 0 {
+                    continue;
+                }
 
                 if y + 1 >= y_limit as i32 {
                     return false;
@@ -709,6 +721,16 @@ mod tests {
         }
 
         assert!(found_some_piece);
+    }
+
+    #[test]
+    fn can_all_pieces_be_spawned() {
+        for i in 1..8 {
+            let mut board = Board::new();
+            board.set_board_size(10, 18);
+
+            board.spawn_piece(i);
+        }
     }
 
     #[test]
