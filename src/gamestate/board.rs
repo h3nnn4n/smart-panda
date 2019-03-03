@@ -1,7 +1,8 @@
 #![allow(dead_code)]
+use gamestate::piece;
+// use wasm_bindgen::prelude::*;
 
-use piece;
-
+// #[wasm_bindgen]
 pub struct Board {
     width: u32,
     height: u32,
@@ -9,6 +10,7 @@ pub struct Board {
     active_piece: Option<piece::Piece>,
 }
 
+// #[wasm_bindgen]
 impl Board {
     pub fn new() -> Board {
         Board {

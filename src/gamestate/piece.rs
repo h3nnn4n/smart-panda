@@ -1,4 +1,5 @@
 #![allow(dead_code)]
+// use wasm_bindgen::prelude::*;
 
 extern crate rand;
 
@@ -7,6 +8,7 @@ use self::rand::Rng;
 const SPAWN_POS_X: u32 = 5;
 const SPAWN_POS_Y: u32 = 1;
 
+// #[wasm_bindgen]
 pub struct Piece {
     piece_id: u32,
     posx: u32,
@@ -18,6 +20,7 @@ pub struct Piece {
     rotation_matrix: [[(i32, i32); 4]; 4],
 }
 
+// #[wasm_bindgen]
 impl Piece {
     pub fn new_random() -> Piece {
         let id = rand::thread_rng().gen_range(1, 8);
