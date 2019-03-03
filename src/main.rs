@@ -1,6 +1,7 @@
 extern crate rand;
 
 mod board;
+mod feature_functions;
 mod gamestate;
 mod piece;
 
