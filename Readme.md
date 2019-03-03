@@ -21,7 +21,7 @@ Smart Panda is a tetris engine to be used mainly for the purpose of (fun) develo
     - [ ] Bag1;
     - [ ] Bag2;
     - [ ] Game Boy Tetris;
-    - [ ] Uniform;
+    - [x] Uniform;
   - [ ] API:
     - [ ] Python?
     - [ ] Lua?
