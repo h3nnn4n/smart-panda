@@ -53,10 +53,12 @@ impl Board {
     }
 
     pub fn reset(&mut self) {
-        self.width = 0;
-        self.height = 0;
+        let width = self.width;
+        let height = self.height;
+
         self.board.clear();
         self.active_piece = None;
+        self.set_board_size(width, height);
     }
 
     pub fn spawn_random_piece(&mut self) -> bool {

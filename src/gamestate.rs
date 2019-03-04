@@ -1,6 +1,4 @@
 #![allow(dead_code)]
-use rand::Rng;
-
 use wasm_bindgen::prelude::*;
 
 mod board;
@@ -62,7 +60,7 @@ impl GameState {
         self.board.step();
     }
 
-    pub fn board_move_active_piece_down_and_try_sleep(&mut self) -> bool {
+    pub fn move_active_piece_down_and_try_sleep(&mut self) -> bool {
         self.board.move_active_piece_down_and_try_sleep()
     }
 
@@ -87,43 +85,5 @@ impl GameState {
         self.lines_cleared += cleared_lines;
         self.points += cleared_lines * 4;
         cleared_lines
-    }
-
-    pub fn demo_random(&mut self) {
-        let mut rng = rand::thread_rng();
-
-        self.set_board_size(10, 18);
-
-        loop {
-            if !self.board.spawn_random_piece() {
-                println!("Game over");
-                break;
-            }
-
-            let direction = rng.gen_range(0, 2);
-            let amount = rng.gen_range(0, 5);
-            let rotation = rng.gen_range(0, 4);
-
-            for _ in 0..rotation {
-                self.board.rotate_active_piece_right();
-            }
-
-            for _ in 0..amount {
-                let moved = match direction {
-                    0 => self.board.move_active_piece_left(),
-                    1 => self.board.move_active_piece_right(),
-                    _ => unreachable!(),
-                };
-
-                if !moved {
-                    break;
-                }
-            }
-
-            while {
-                let moved = self.board.move_active_piece_down_and_try_sleep();
-                moved
-            } {}
-        }
     }
 }
