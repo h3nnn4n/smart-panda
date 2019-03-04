@@ -13,9 +13,13 @@ pub struct Board {
 
 impl fmt::Display for Board {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        for line in self.board.as_slice().chunks(self.height as usize) {
-            for &cell in line {
-                let symbol = if cell == 0 { '◻' } else { '◼' };
+        for j in 0..self.height {
+            for i in 0..self.width {
+                let symbol = if self.get_block(i, j) == 0 {
+                    '◻'
+                } else {
+                    '◼'
+                };
                 write!(f, "{}", symbol)?;
             }
             write!(f, "\n")?;
