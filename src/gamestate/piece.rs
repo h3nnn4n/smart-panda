@@ -3,10 +3,12 @@
 extern crate rand;
 
 use self::rand::Rng;
+use wasm_bindgen::prelude::*;
 
 const SPAWN_POS_X: u32 = 5;
 const SPAWN_POS_Y: u32 = 1;
 
+#[wasm_bindgen]
 pub struct Piece {
     piece_id: u32,
     posx: u32,

@@ -1,6 +1,8 @@
 #![allow(dead_code)]
 use gamestate::piece;
+use wasm_bindgen::prelude::*;
 
+#[wasm_bindgen]
 pub struct Board {
     width: u32,
     height: u32,

@@ -1,4 +1,5 @@
 #![allow(dead_code)]
+use wasm_bindgen::prelude::*;
 
 mod board;
 mod piece;
@@ -6,12 +7,14 @@ mod piece;
 use rand::Rng;
 use std::{thread, time};
 
+#[wasm_bindgen]
 pub struct GameState {
     points: u32,
     lines_cleared: u32,
-    pub board: board::Board,
+    board: board::Board,
 }
 
+#[wasm_bindgen]
 impl GameState {
     pub fn new() -> GameState {
         let bb = board::Board::new();
