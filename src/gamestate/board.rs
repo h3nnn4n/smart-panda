@@ -690,9 +690,9 @@ mod tests {
 
         board.reset();
         assert!(board.active_piece.is_none());
-        assert_eq!(0, board.board.len());
-        assert_eq!(0, board.height);
-        assert_eq!(0, board.width);
+        assert_eq!(10 * 18, board.board.len());
+        assert_eq!(18, board.height);
+        assert_eq!(10, board.width);
     }
 
     #[test]
