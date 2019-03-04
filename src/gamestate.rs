@@ -5,7 +5,6 @@ mod board;
 mod piece;
 
 use rand::Rng;
-use std::{thread, time};
 
 #[wasm_bindgen]
 pub struct GameState {
@@ -87,7 +86,7 @@ impl GameState {
 
             for _ in 0..rotation {
                 self.board.rotate_active_piece_right();
-                self.update_view();
+                self.print_board();
             }
 
             for _ in 0..amount {
@@ -97,7 +96,7 @@ impl GameState {
                     _ => unreachable!(),
                 };
 
-                self.update_view();
+                self.print_board();
 
                 if !moved {
                     break;
@@ -106,16 +105,9 @@ impl GameState {
 
             while {
                 let moved = self.board.move_active_piece_down_and_try_sleep();
-                self.update_view();
+                self.print_board();
                 moved
             } {}
         }
-    }
-
-    pub fn update_view(&self) {
-        print!("{}[2J", 27 as char);
-        self.print_board();
-        thread::sleep(time::Duration::from_millis(80));
-        //thread::sleep(time::Duration::from_millis(160));
     }
 }

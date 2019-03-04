@@ -9,4 +9,4 @@ var gamestate = Rust.get_new_gamestate();
 gamestate.set_board_size(10, 10);
 
 console.log(gamestate);
-// debugger;
+debugger;

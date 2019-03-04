@@ -1,5 +1,6 @@
 #![allow(dead_code)]
 use gamestate::piece;
+use std::fmt;
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -8,6 +9,20 @@ pub struct Board {
     height: u32,
     board: Vec<u32>,
     active_piece: Option<piece::Piece>,
+}
+
+impl fmt::Display for Board {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        for line in self.board.as_slice().chunks(self.width as usize) {
+            for &cell in line {
+                let symbol = if cell == 0 { '◻' } else { '◼' };
+                write!(f, "{}", symbol)?;
+            }
+            write!(f, "\n")?;
+        }
+
+        Ok(())
+    }
 }
 
 #[wasm_bindgen]
