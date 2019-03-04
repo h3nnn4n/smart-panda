@@ -46,12 +46,12 @@ impl GameState {
         self.board.spawn_piece(id);
     }
 
-    pub fn spawn_random_piece(&mut self) {
-        self.board.spawn_random_piece();
+    pub fn spawn_random_piece(&mut self) -> bool {
+        self.board.spawn_random_piece()
     }
 
-    pub fn print_board(&self) {
-        self.board.print_board()
+    pub fn board_to_string(&self) -> String {
+        self.board.to_string()
     }
 
     pub fn has_active_piece(&mut self) -> bool {
@@ -60,6 +60,10 @@ impl GameState {
 
     pub fn step(&mut self) {
         self.board.step();
+    }
+
+    pub fn board_move_active_piece_down_and_try_sleep(&mut self) -> bool {
+        self.board.move_active_piece_down_and_try_sleep()
     }
 
     pub fn clear_lines(&mut self) -> u32 {
@@ -86,7 +90,6 @@ impl GameState {
 
             for _ in 0..rotation {
                 self.board.rotate_active_piece_right();
-                self.print_board();
             }
 
             for _ in 0..amount {
@@ -96,8 +99,6 @@ impl GameState {
                     _ => unreachable!(),
                 };
 
-                self.print_board();
-
                 if !moved {
                     break;
                 }
@@ -105,7 +106,6 @@ impl GameState {
 
             while {
                 let moved = self.board.move_active_piece_down_and_try_sleep();
-                self.print_board();
                 moved
             } {}
         }

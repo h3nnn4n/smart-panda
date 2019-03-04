@@ -2,14 +2,30 @@
 
 import * as Rust from "smart-panda";
 
+const pre = document.getElementById("game-of-life-canvas");
+
 Rust.console_log("Starting");
-console.log(Rust);
 
 var gamestate = Rust.get_new_gamestate();
-gamestate.set_board_size(10, 10);
-gamestate.step();
-gamestate.spawn_random_piece();
-gamestate.step();
+gamestate.set_board_size(10, 20);
 
-console.log(gamestate);
-// debugger;
+const draw = () => {
+    pre.textContent = gamestate.board_to_string();
+}
+
+
+const renderLoop = () => {
+    if (gamestate.board_move_active_piece_down_and_try_sleep()) {
+        draw();
+    } else {
+        if (gamestate.spawn_random_piece()) {
+            draw();
+        } else {
+            pre.textContent = "Game Over";
+        }
+    }
+
+    requestAnimationFrame(renderLoop);
+};
+
+requestAnimationFrame(renderLoop)

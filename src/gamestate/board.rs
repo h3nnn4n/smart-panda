@@ -13,7 +13,7 @@ pub struct Board {
 
 impl fmt::Display for Board {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        for line in self.board.as_slice().chunks(self.width as usize) {
+        for line in self.board.as_slice().chunks(self.height as usize) {
             for &cell in line {
                 let symbol = if cell == 0 { '◻' } else { '◼' };
                 write!(f, "{}", symbol)?;
@@ -64,35 +64,6 @@ impl Board {
         } else {
             false
         }
-    }
-
-    pub fn print_board(&self) {
-        print!("      +");
-        for _ in 0..self.width {
-            print!("-");
-        }
-        println!("+ ");
-
-        for j in 0..self.height {
-            print!("{:4}  |", j + 1);
-            for i in 0..self.width {
-                let c = match self.get_block(i, j) {
-                    0 => ' ',
-                    1...126 => 'O',
-                    _ => 'X',
-                };
-
-                print!("{}", c);
-            }
-
-            println!("|");
-        }
-
-        print!("      +");
-        for _ in 0..self.width {
-            print!("-");
-        }
-        println!("+ ");
     }
 
     pub fn spawn_and_place_piece(&mut self, id: u32, x: u32, y: u32) {
