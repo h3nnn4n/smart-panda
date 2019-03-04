@@ -66,6 +66,22 @@ impl GameState {
         self.board.move_active_piece_down_and_try_sleep()
     }
 
+    pub fn move_active_piece_left(&mut self) -> bool {
+        self.board.move_active_piece_left()
+    }
+
+    pub fn move_active_piece_right(&mut self) -> bool {
+        self.board.move_active_piece_right()
+    }
+
+    pub fn rotate_active_piece_left(&mut self) -> bool {
+        self.board.rotate_active_piece_left()
+    }
+
+    pub fn rotate_active_piece_right(&mut self) -> bool {
+        self.board.rotate_active_piece_right()
+    }
+
     pub fn clear_lines(&mut self) -> u32 {
         let cleared_lines = self.board.clear_lines();
         self.lines_cleared += cleared_lines;
