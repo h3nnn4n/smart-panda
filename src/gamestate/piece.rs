@@ -2,7 +2,7 @@
 
 extern crate rand;
 
-use self::rand::Rng;
+use rand::Rng;
 use wasm_bindgen::prelude::*;
 
 const SPAWN_POS_X: u32 = 5;

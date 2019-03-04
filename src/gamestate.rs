@@ -1,10 +1,10 @@
 #![allow(dead_code)]
+use rand::Rng;
+
 use wasm_bindgen::prelude::*;
 
 mod board;
 mod piece;
-
-use rand::Rng;
 
 #[wasm_bindgen]
 pub struct GameState {
