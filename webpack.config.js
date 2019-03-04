@@ -1,3 +1,5 @@
+/*jshint esversion: 6 */
+
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const path = require('path');
 
@@ -11,4 +13,11 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin(['index.html'])
   ],
+  module: {
+    rules: [{
+      include: [
+        path.resolve(__dirname, "js")
+      ],
+    }]
+  },
 };
