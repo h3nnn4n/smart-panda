@@ -3,20 +3,15 @@
 mod board;
 mod piece;
 
-// use board;
 use rand::Rng;
 use std::{thread, time};
 
-// use wasm_bindgen::prelude::*;
-
-// #[wasm_bindgen]
 pub struct GameState {
     points: u32,
     lines_cleared: u32,
     pub board: board::Board,
 }
 
-// #[wasm_bindgen]
 impl GameState {
     pub fn new() -> GameState {
         let bb = board::Board::new();

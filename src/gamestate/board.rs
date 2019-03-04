@@ -1,8 +1,6 @@
 #![allow(dead_code)]
 use gamestate::piece;
-// use wasm_bindgen::prelude::*;
 
-// #[wasm_bindgen]
 pub struct Board {
     width: u32,
     height: u32,
@@ -10,7 +8,6 @@ pub struct Board {
     active_piece: Option<piece::Piece>,
 }
 
-// #[wasm_bindgen]
 impl Board {
     pub fn new() -> Board {
         Board {
@@ -277,7 +274,8 @@ impl Board {
 
         if let Some(ref active_piece) = self.active_piece {
             for j in 0..4 {
-                let (x_, y_) = active_piece.get_body()[j];
+                let body = active_piece.get_body()[j];
+                let (x_, y_) = (body[0], body[1]);
                 let (x, y) = (
                     x_ + active_piece.get_x() as i32,
                     y_ + active_piece.get_y() as i32,
@@ -303,7 +301,8 @@ impl Board {
 
         if let Some(ref active_piece) = self.active_piece {
             for j in 0..4 {
-                let (x_, y_) = active_piece.get_body()[j];
+                let body = active_piece.get_body()[j];
+                let (x_, y_) = (body[0], body[1]);
                 let (x, y) = (
                     x_ + active_piece.get_x() as i32,
                     y_ + active_piece.get_y() as i32,
@@ -336,7 +335,8 @@ impl Board {
 
         if let Some(ref active_piece) = self.active_piece {
             for j in 0..4 {
-                let (x_, y_) = active_piece.get_body()[j];
+                let body = active_piece.get_body()[j];
+                let (x_, y_) = (body[0], body[1]);
                 let (x, y) = (
                     x_ + active_piece.get_x() as i32,
                     y_ + active_piece.get_y() as i32,
@@ -369,7 +369,8 @@ impl Board {
 
         if let Some(ref active_piece) = self.active_piece {
             for j in 0..4 {
-                let (x_, y_) = active_piece.get_body()[j];
+                let body = active_piece.get_body()[j];
+                let (x_, y_) = (body[0], body[1]);
                 let (x, y) = (
                     x_ + active_piece.get_x() as i32,
                     y_ + active_piece.get_y() as i32,
@@ -426,7 +427,8 @@ impl Board {
             piece_id = active_piece.get_id();
 
             for j in 0..4 {
-                let (x_, y_) = active_piece.get_body()[j];
+                let body = active_piece.get_body()[j];
+                let (x_, y_) = (body[0], body[1]);
                 let (x, y) = (
                     x_ + active_piece.get_x() as i32,
                     y_ + active_piece.get_y() as i32,
@@ -456,7 +458,8 @@ impl Board {
             piece_id = active_piece.get_id();
 
             for j in 0..4 {
-                let (x_, y_) = active_piece.get_body()[j];
+                let body = active_piece.get_body()[j];
+                let (x_, y_) = (body[0], body[1]);
                 let (x, y) = (
                     x_ + active_piece.get_x() as i32,
                     y_ + active_piece.get_y() as i32,

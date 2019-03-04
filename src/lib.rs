@@ -1,9 +1,6 @@
 extern crate rand;
 extern crate wasm_bindgen;
 
-// mod board;
-// mod feature_functions;
-// mod piece;
 mod gamestate;
 mod utils;
 
@@ -22,4 +19,9 @@ pub fn console_log(text: &str) {
 #[wasm_bindgen]
 pub fn js_alert(name: &str) {
     alert(&format!("{}", name));
+}
+
+#[wasm_bindgen]
+pub fn init_gamestate() {
+    gamestate::GameState::new();
 }
