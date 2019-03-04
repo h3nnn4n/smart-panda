@@ -20,14 +20,11 @@ pub struct Piece {
     rotation_matrix: [[[i32; 2]; 4]; 4],
 }
 
+#[wasm_bindgen]
 impl Piece {
     pub fn new_random() -> Piece {
         let id = rand::thread_rng().gen_range(1, 8);
         Piece::spawn_piece(id)
-    }
-
-    pub fn get_body(&self) -> [[i32; 2]; 4] {
-        self.body
     }
 
     pub fn get_x(&self) -> u32 {
@@ -81,7 +78,9 @@ impl Piece {
     pub fn spawn_piece(id: u32) -> Piece {
         Piece::spawn_and_place_piece(id, SPAWN_POS_X, SPAWN_POS_Y)
     }
+}
 
+impl Piece {
     pub fn spawn_and_place_piece(id: u32, x: u32, y: u32) -> Piece {
         match id {
             1 => Piece::i_piece(x, y),
@@ -93,6 +92,10 @@ impl Piece {
             7 => Piece::t_piece(x, y),
             _ => unreachable!(),
         }
+    }
+
+    pub fn get_body(&self) -> [[i32; 2]; 4] {
+        self.body
     }
 
     fn update_piece_body(&mut self) {

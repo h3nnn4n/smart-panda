@@ -26,6 +26,14 @@ impl GameState {
         }
     }
 
+    pub fn get_points(&mut self) -> u32 {
+        self.points
+    }
+
+    pub fn get_lines_cleared(&mut self) -> u32 {
+        self.lines_cleared
+    }
+
     pub fn set_board_size(&mut self, width: u32, height: u32) {
         self.board.set_board_size(width, height);
     }

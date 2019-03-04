@@ -20,3 +20,8 @@ pub fn console_log(text: &str) {
 pub fn js_alert(name: &str) {
     alert(&format!("{}", name));
 }
+
+#[wasm_bindgen]
+pub fn get_new_gamestate() -> gamestate::GameState {
+    gamestate::GameState::new()
+}

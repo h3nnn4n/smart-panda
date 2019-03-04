@@ -10,6 +10,7 @@ pub struct Board {
     active_piece: Option<piece::Piece>,
 }
 
+#[wasm_bindgen]
 impl Board {
     pub fn new() -> Board {
         Board {
