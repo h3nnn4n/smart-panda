@@ -11,8 +11,7 @@ gamestate.set_board_size(10, 20);
 
 const draw = () => {
     pre.textContent = gamestate.board_to_string();
-}
-
+};
 
 const renderLoop = () => {
     if (gamestate.board_move_active_piece_down_and_try_sleep()) {
@@ -28,4 +27,4 @@ const renderLoop = () => {
     requestAnimationFrame(renderLoop);
 };
 
-requestAnimationFrame(renderLoop)
+requestAnimationFrame(renderLoop);
