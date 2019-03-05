@@ -22,8 +22,8 @@ export function startGame() {
     currentState = AgentState.GAMESTART;
 }
 
-export function isGameOver() {
-    return currentState === AgentState.GAMEOVER;
+export function isInGame() {
+    return currentState != AgentState.GAMEOVER && currentState != AgentState.GAMESTART;
 }
 
 export function RandomAgent(gamestate) {

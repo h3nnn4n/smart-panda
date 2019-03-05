@@ -91,13 +91,12 @@ const drawGameOver = () => {
 };
 
 const draw = () => {
-    if (RandomPlayer.isGameOver()) {
-        drawGameOver();
-    } else {
+    if (RandomPlayer.isInGame()) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawGrid();
         drawCells();
-        // drawGameOver();
+    } else {
+        drawGameOver();
     }
 };
 
