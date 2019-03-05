@@ -4,6 +4,7 @@ import * as Rust from "smart-panda";
 import {
     memory
 } from "smart-panda/smart_panda_bg";
+import * as Fps from "./js/fps.js";
 import * as RandomPlayer from "./js/random_player.js";
 
 // Lets use the js call from rust to js again just to make sure
@@ -101,6 +102,8 @@ const draw = () => {
 };
 
 const renderLoop = () => {
+    Fps.fps.render();
+
     RandomPlayer.RandomAgent(gamestate);
 
     draw();
