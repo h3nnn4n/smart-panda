@@ -8,6 +8,7 @@ mod piece;
 pub struct GameState {
     points: u32,
     lines_cleared: u32,
+    game_over: bool,
     board: board::Board,
 }
 
@@ -19,8 +20,17 @@ impl GameState {
         GameState {
             points: 0,
             lines_cleared: 0,
+            game_over: false,
             board: bb,
         }
+    }
+
+    pub fn is_game_over(&self) -> bool {
+        self.game_over
+    }
+
+    pub fn set_game_over(&mut self, game_over: bool) {
+        self.game_over = game_over;
     }
 
     pub fn get_points(&mut self) -> u32 {

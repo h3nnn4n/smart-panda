@@ -1,4 +1,4 @@
-/*jshint esversion: 6 */
+/* jshint esversion: 6 */
 
 const enumValue = (name) => Object.freeze({
     toString: () => name
@@ -14,17 +14,9 @@ const AgentState = Object.freeze({
     MOVE_DOWN: enumValue("AgentState.MOVE_DOWN"),
 });
 
-var currentState = AgentState.SPAWN;
+var currentState = AgentState.GAMESTART;
 var gameOverCounter = 60;
 const gameOverFrames = 90;
-
-export function startGame() {
-    currentState = AgentState.GAMESTART;
-}
-
-export function isInGame() {
-    return currentState != AgentState.GAMEOVER && currentState != AgentState.GAMESTART;
-}
 
 export function RandomAgent(gamestate) {
     switch (currentState) {
@@ -39,11 +31,13 @@ export function RandomAgent(gamestate) {
         case AgentState.GAMESTART:
             gamestate.reset();
             currentState = AgentState.SPAWN;
+            gamestate.set_game_over(false);
             break;
         case AgentState.SPAWN:
             if (gamestate.spawn_random_piece()) {
                 currentState = AgentState.ROTATE;
             } else {
+                gamestate.set_game_over(true);
                 currentState = AgentState.GAMEOVER;
             }
             break;
