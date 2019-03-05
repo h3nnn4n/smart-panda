@@ -31,6 +31,18 @@ impl GameState {
         self.lines_cleared
     }
 
+    pub fn get_width(&self) -> u32 {
+        self.board.get_width()
+    }
+
+    pub fn get_height(&self) -> u32 {
+        self.board.get_height()
+    }
+
+    pub fn get_board_pointer(&self) -> *const u32 {
+        self.board.get_board_pointer()
+    }
+
     pub fn set_board_size(&mut self, width: u32, height: u32) {
         self.board.set_board_size(width, height);
     }

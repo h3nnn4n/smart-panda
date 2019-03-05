@@ -61,6 +61,18 @@ impl Board {
         self.set_board_size(width, height);
     }
 
+    pub fn get_width(&self) -> u32 {
+        self.width
+    }
+
+    pub fn get_height(&self) -> u32 {
+        self.height
+    }
+
+    pub fn get_board_pointer(&self) -> *const u32 {
+        self.board.as_ptr()
+    }
+
     pub fn spawn_random_piece(&mut self) -> bool {
         let new_piece = piece::Piece::new_random();
         self.active_piece = Some(new_piece);

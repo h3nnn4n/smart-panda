@@ -4,7 +4,8 @@ version = "0.1.0"
 authors = ["h3nnn4n <uber.renan@gmail.com>"]
 
 [features]
-default = ["console_error_panic_hook", "wee_alloc"]
+default = ["console_error_panic_hook"]
+# default = ["console_error_panic_hook", "wee_alloc"]
 
 [dependencies]
 wasm-bindgen = "0.2.37"
