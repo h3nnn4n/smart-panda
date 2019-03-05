@@ -64,6 +64,15 @@
 /******/ 					"__wbg_alert_d5ae7b99faf0a48f": function(p0i32,p1i32) {
 /******/ 						return installedModules["./pkg/smart_panda.js"].exports["__wbg_alert_d5ae7b99faf0a48f"](p0i32,p1i32);
 /******/ 					},
+/******/ 					"__wbg_new_a99726b0abef495b": function() {
+/******/ 						return installedModules["./pkg/smart_panda.js"].exports["__wbg_new_a99726b0abef495b"]();
+/******/ 					},
+/******/ 					"__wbg_stack_4931b18709aff089": function(p0i32,p1i32) {
+/******/ 						return installedModules["./pkg/smart_panda.js"].exports["__wbg_stack_4931b18709aff089"](p0i32,p1i32);
+/******/ 					},
+/******/ 					"__wbg_error_f7214ae7db04600c": function(p0i32,p1i32) {
+/******/ 						return installedModules["./pkg/smart_panda.js"].exports["__wbg_error_f7214ae7db04600c"](p0i32,p1i32);
+/******/ 					},
 /******/ 					"__widl_f_log_1_": function(p0i32) {
 /******/ 						return installedModules["./pkg/smart_panda.js"].exports["__widl_f_log_1_"](p0i32);
 /******/ 					},
@@ -198,7 +207,7 @@
 /******/ 				promises.push(installedWasmModuleData);
 /******/ 			else {
 /******/ 				var importObject = wasmImportObjects[wasmModuleId]();
-/******/ 				var req = fetch(__webpack_require__.p + "" + {"./pkg/smart_panda_bg.wasm":"4e214bf1f9ec8fd967d9"}[wasmModuleId] + ".module.wasm");
+/******/ 				var req = fetch(__webpack_require__.p + "" + {"./pkg/smart_panda_bg.wasm":"74177336bbaf1dcfdf1c"}[wasmModuleId] + ".module.wasm");
 /******/ 				var promise;
 /******/ 				if(importObject instanceof Promise && typeof WebAssembly.compileStreaming === 'function') {
 /******/ 					promise = Promise.all([WebAssembly.compileStreaming(req), importObject]).then(function(items) {
