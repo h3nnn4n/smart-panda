@@ -5,6 +5,7 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
     crossorigin="anonymous">
   <style>
+    /* TODO Move this outta here */
     body {
       position: absolute;
       top: 0;
@@ -17,7 +18,7 @@
       justify-content: center;
     }
 
-    #fps {
+    .monospaced-text {
         white-space: pre;
         font-family: monospace;
     }
@@ -55,8 +56,9 @@
       <div class="col-6">
         <canvas id="tetris-canvas"></canvas>
       </div>
-      <div class="col-6">
+      <div class="monospaced-text col-6">
         <div id="fps"></div>
+        <div id="feature-functions"></div>
       </div>
     </div>
   </div>

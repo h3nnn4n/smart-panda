@@ -11,5 +11,5 @@ const AgentState = Object.freeze({
 var currentState = AgentState.GAMESTART;
 
 export function LearningAgent(gamestate) {
-
+    // gamestate.get_aggregate_height();
 }

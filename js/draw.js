@@ -1,5 +1,6 @@
 /* jslint esversion: 6*/
 
+import * as FeatureFunctions from "./feature_functions.js";
 import {
     memory
 } from "smart-panda/smart_panda_bg";
@@ -7,7 +8,8 @@ import {
 const CELL_SIZE = 10; // px
 const GRID_COLOR = "#CCCCCC";
 const DEAD_COLOR = "#FFFFFF";
-const ALIVE_COLOR = "#000000";
+const ACTIVE_COLOR = "#BA946A";
+const PLACED_COLOR = "#000000";
 
 var gamestate;
 var width;
@@ -59,9 +61,17 @@ function drawCells() {
         for (let col = 0; col < width; col++) {
             const idx = getIndex(row, col);
 
-            ctx.fillStyle = cells[idx] === 0 ?
-                DEAD_COLOR :
-                ALIVE_COLOR;
+            switch (cells[idx]) {
+                case 0:
+                    ctx.fillStyle = DEAD_COLOR;
+                    break;
+                default:
+                    if (cells[idx] > 10) {
+                        ctx.fillStyle = ACTIVE_COLOR;
+                    } else {
+                        ctx.fillStyle = PLACED_COLOR;
+                    }
+            }
 
             ctx.fillRect(
                 col * (CELL_SIZE + 1) + 1,
@@ -94,5 +104,6 @@ export function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawGrid();
         drawCells();
+        FeatureFunctions.drawFeatures(gamestate);
     }
 }

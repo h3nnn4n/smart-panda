@@ -2,6 +2,7 @@
 use wasm_bindgen::prelude::*;
 
 mod board;
+mod feature_functions;
 mod piece;
 
 #[wasm_bindgen]

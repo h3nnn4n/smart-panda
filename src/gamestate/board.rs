@@ -523,7 +523,7 @@ impl Board {
         self.board[index] = 0;
     }
 
-    fn get_block(&self, x: u32, y: u32) -> u32 {
+    pub fn get_block(&self, x: u32, y: u32) -> u32 {
         let index = (x * self.height + y) as usize;
 
         self.board[index]

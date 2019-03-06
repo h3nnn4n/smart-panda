@@ -5,8 +5,13 @@ var current_agent_mode;
 function radio_mode_change_event() {
     const checked_radio = $("input[name='agent-mode']:checked");
     const unchecked_radio = $("input[name='agent-mode']").not(':checked');
+    const new_agent_mode = checked_radio.val();
 
-    current_agent_mode = checked_radio.val();
+    if (current_agent_mode != new_agent_mode) {
+        // Stuff
+    }
+
+    current_agent_mode = new_agent_mode;
 
     checked_radio.parent().addClass('active');
     unchecked_radio.parent().removeClass('active');
