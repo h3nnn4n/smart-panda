@@ -13,7 +13,7 @@ var gamestate;
 var width;
 var height;
 
-const canvas = document.getElementById("game-of-life-canvas");
+const canvas = document.getElementById("tetris-canvas");
 const ctx = canvas.getContext('2d');
 
 const getIndex = (row, column) => {

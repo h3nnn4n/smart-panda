@@ -3,8 +3,8 @@
 var current_agent_mode;
 
 function radio_mode_change_event() {
-    var checked_radio = $("input[name='agent-mode']:checked");
-    var unchecked_radio = $("input[name='agent-mode']").not(':checked');
+    const checked_radio = $("input[name='agent-mode']:checked");
+    const unchecked_radio = $("input[name='agent-mode']").not(':checked');
 
     current_agent_mode = checked_radio.val();
 
@@ -13,7 +13,7 @@ function radio_mode_change_event() {
 }
 
 export function initInterface() {
-    var $radio_mode = $("input[name='agent-mode']");
+    const $radio_mode = $("input[name='agent-mode']");
 
     $radio_mode.click(radio_mode_change_event);
     radio_mode_change_event();
@@ -21,4 +21,8 @@ export function initInterface() {
 
 export function useRandomAgent() {
     return current_agent_mode == 'random';
+}
+
+export function useLearningAgent() {
+    return current_agent_mode == 'learning';
 }

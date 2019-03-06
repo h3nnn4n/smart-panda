@@ -2,8 +2,9 @@
 
 import * as Rust from "smart-panda";
 import * as Fps from "./js/fps.js";
-import * as RandomPlayer from "./js/random_player.js";
 import * as Draw from "./js/draw.js";
+import * as RandomAgent from "./js/random_agent.js";
+import * as LearningAgent from "./js/learning_agent.js";
 import * as Interface from "./js/user_interface.js";
 
 // Lets use the js call from rust to js again just to make sure
@@ -16,7 +17,9 @@ const renderLoop = () => {
     Fps.fps.render();
 
     if (Interface.useRandomAgent()) {
-        RandomPlayer.RandomAgent(gamestate);
+        RandomAgent.RandomAgent(gamestate);
+    } else if (Interface.useLearningAgent()) {
+        LearningAgent.LearningAgent(gamestate);
     }
 
     Draw.draw();
@@ -33,5 +36,6 @@ const init = () => {
 
     requestAnimationFrame(renderLoop);
 };
+
 
 init();

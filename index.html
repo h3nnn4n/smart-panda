@@ -2,6 +2,8 @@
 <html>
 
 <head>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous">
   <style>
     body {
       position: absolute;
@@ -16,20 +18,30 @@
     }
 
     #fps {
-      white-space: pre;
-      font-family: monospace;
+        white-space: pre;
+        font-family: monospace;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #agent-mode {
+      padding-bottom: 15px;
     }
   </style>
-
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-    crossorigin="anonymous">
 
   <meta charset="utf-8">
   <title>Smart Panda -> Tetris</title>
 </head>
 
 <body>
-  <div id='radio-mode' class="btn-group btn-group-sm btn-group-toggle">
+  <script src="./bootstrap.js"></script>
+
+  <div id='agent-mode' class="btn-group btn-group-sm btn-group-toggle">
     <label class="btn btn-secondary">
       <input type="radio" name="agent-mode" value='random' id="option1" autocomplete="off" checked> Random
     </label>
@@ -38,12 +50,16 @@
     </label>
   </div>
 
-  <br>
-
-  <canvas id="game-of-life-canvas"></canvas>
-  <script src="./bootstrap.js"></script>
-  <br>
-  <div id="fps"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-6">
+        <canvas id="tetris-canvas"></canvas>
+      </div>
+      <div class="col-6">
+        <div id="fps"></div>
+      </div>
+    </div>
+  </div>
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
