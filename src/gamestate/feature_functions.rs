@@ -11,7 +11,7 @@ pub fn get_aggregate_height(board: &board::Board) -> u32 {
         for j in 0..board.get_height() {
             let block = board.get_block(i, j);
 
-            if block != 0 {
+            if is_static(block) {
                 aggregate_height += board.get_height() - j;
                 break;
             }
@@ -19,6 +19,10 @@ pub fn get_aggregate_height(board: &board::Board) -> u32 {
     }
 
     aggregate_height
+}
+
+fn is_static(block: u32) -> bool {
+    block != 0 && block < 10
 }
 
 #[wasm_bindgen]
@@ -38,6 +42,29 @@ mod tests {
         board.set_board_size(10, 18);
 
         assert_eq!(0, get_aggregate_height(&board));
+    }
+
+    #[test]
+    fn aggregate_height_with_floating_o_piece() {
+        let mut board = board::Board::new();
+        board.set_board_size(10, 18);
+
+        board.spawn_piece(2);
+
+        assert_eq!(0, get_aggregate_height(&board));
+    }
+
+    #[test]
+    fn aggregate_height_with_floating_and_placed_o_piece() {
+        let mut board = board::Board::new();
+        board.set_board_size(10, 18);
+
+        board.spawn_piece(2);
+        while { board.move_active_piece_down_and_try_sleep() } {}
+
+        board.spawn_piece(2);
+
+        assert_eq!(4, get_aggregate_height(&board));
     }
 
     #[test]
