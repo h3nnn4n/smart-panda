@@ -1,7 +1,5 @@
 /* jshint esversion: 6 */
 
-const turboMode = false;
-
 const enumValue = (name) => Object.freeze({
     toString: () => name
 });
@@ -14,6 +12,10 @@ const AgentState = Object.freeze({
     FIND_AND_PLACE: enumValue("AgentState.FIND_AND_PLACE"),
 });
 
+const rand_int = (min, max) => {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
 var currentState = AgentState.GAMESTART;
 
 var feature_weights = [-1, -1];
@@ -22,6 +24,9 @@ const feature_functions = [(a) => {
 }, (a) => {
     a.get_surface_variance();
 }];
+
+var todo_rotation;
+var todo_lateral_move;
 
 const get_board_score = (gamestate) => {
     var board_score = 0;
@@ -38,7 +43,7 @@ const get_board_score = (gamestate) => {
 };
 
 export function LearningAgent(gamestate) {
-    console.log(currentState.toString());
+    // console.log(currentState.toString());
     switch (currentState) {
         case AgentState.GAMEOVER:
             game_over_state(gamestate);
@@ -75,12 +80,26 @@ const spawn = (gamestate) => {
 };
 
 const find_and_place = (gamestate) => {
-    if (turboMode) {
-        while (gamestate.move_active_piece_down_and_try_sleep()) {}
-        currentState = AgentState.SPAWN;
-    } else {
-        if (!gamestate.move_active_piece_down_and_try_sleep()) {
-            currentState = AgentState.SPAWN;
-        }
-    }
+    find_best_plate(gamestate);
+    rotate(gamestate);
+    move(gamestate);
+    place(gamestate);
+};
+
+const find_best_plate = (gamestate) => {
+    todo_rotation = rand_int(-3, 3);
+    todo_lateral_move = rand_int(-5, 5);
+};
+
+const rotate = (gamestate) => {
+    //
+};
+
+const move = (gamestate) => {
+    //
+};
+
+const place = (gamestate) => {
+    while (gamestate.move_active_piece_down_and_try_sleep()) {}
+    currentState = AgentState.SPAWN;
 };
