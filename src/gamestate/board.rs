@@ -87,9 +87,26 @@ impl Board {
         }
     }
 
+    pub fn get_active_piece(&self) -> piece::Piece {
+        match self.active_piece {
+            Some(ref piece) => piece.clone(),
+            None => panic!("No active piece to return"),
+        }
+    }
+
+    pub fn build_active_piece(&mut self, id: u32, _x: u32, _y: u32, _rotation: u32) {
+        let new_piece = piece::Piece::spawn_piece(id);
+        self.active_piece = Some(new_piece);
+
+        if self.can_active_piece_be_spawned() {
+            self.update();
+        }
+    }
+
     pub fn spawn_random_piece(&mut self) -> bool {
         let new_piece = piece::Piece::new_random();
         self.active_piece = Some(new_piece);
+
         if self.can_active_piece_be_spawned() {
             self.update();
             true

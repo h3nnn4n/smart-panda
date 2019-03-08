@@ -32,10 +32,14 @@ const feature_functions = [(a) => {
 var todo_rotation;
 var todo_lateral_move;
 
+var active_piece;
+var board_pointer;
+var board_data;
+
 const get_board_score = (gamestate) => {
     var board_score = 0;
 
-    features_scores = feature_functions.map(f => f(gamestate));
+    var features_scores = feature_functions.map(f => f(gamestate));
 
     for (let index = 0; index < feature_weights.length; index++) {
         const weight = feature_weights[index];
@@ -52,6 +56,22 @@ const get_board_pointer = (gamestate) => {
     const height = gamestate.get_height();
 
     return new Uint32Array(memory.buffer, cellsPtr, width * height);
+};
+
+const store_board = (gamestate) => {
+    board_pointer = get_board_pointer(gamestate);
+    board_data = new Uint32Array(board_pointer);
+    active_piece = gamestate.get_active_piece();
+};
+
+const load_board = (gamestate) => {
+    set_board(board_pointer, board_data);
+    gamestate.build_active_piece(
+        active_piece.get_id(),
+        active_piece.get_x(),
+        active_piece.get_y(),
+        active_piece.get_rotation()
+    );
 };
 
 const set_board = (board_pointer, board_data) => {
@@ -102,15 +122,18 @@ const find_and_place = (gamestate) => {
     rotate(gamestate);
     move(gamestate);
     place(gamestate);
+    currentState = AgentState.SPAWN;
 };
 
 const find_best_place = (gamestate) => {
-    const board_pointer = get_board_pointer(gamestate);
-    const board_data = new Uint32Array(board_pointer);
+    store_board(gamestate);
 
-    // Do stuff
+    rotate(gamestate);
+    move(gamestate);
+    place(gamestate);
+    var score = get_board_score(gamestate);
 
-    set_board(board_pointer, board_data);
+    load_board(gamestate);
 
     todo_rotation = rand_int(0, 3);
     todo_lateral_move = rand_int(-5, 5);
@@ -144,5 +167,4 @@ const move = (gamestate) => {
 
 const place = (gamestate) => {
     while (gamestate.move_active_piece_down_and_try_sleep()) {}
-    currentState = AgentState.SPAWN;
 };

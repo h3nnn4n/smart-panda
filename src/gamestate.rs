@@ -58,6 +58,14 @@ impl GameState {
         self.board.set_board(board);
     }
 
+    pub fn get_active_piece(&self) -> piece::Piece {
+        self.board.get_active_piece()
+    }
+
+    pub fn build_active_piece(&mut self, id: u32, x: u32, y: u32, rotation: u32) {
+        self.board.build_active_piece(id, x, y, rotation);
+    }
+
     pub fn set_board_size(&mut self, width: u32, height: u32) {
         self.board.set_board_size(width, height);
     }

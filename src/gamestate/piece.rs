@@ -9,6 +9,7 @@ const SPAWN_POS_X: u32 = 5;
 const SPAWN_POS_Y: u32 = 1;
 
 #[wasm_bindgen]
+#[derive(Clone)]
 pub struct Piece {
     piece_id: u32,
     posx: u32,
@@ -65,6 +66,10 @@ impl Piece {
         self.rotation -= 1;
 
         self.update_piece_body()
+    }
+
+    pub fn get_rotation(&self) -> u32 {
+        self.rotation
     }
 
     pub fn move_down(&mut self) {
