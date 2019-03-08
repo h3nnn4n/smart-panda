@@ -54,6 +54,10 @@ impl GameState {
         self.board.get_board_pointer()
     }
 
+    pub fn set_board(&mut self, board: &mut [u32]) {
+        self.board.set_board(board);
+    }
+
     pub fn set_board_size(&mut self, width: u32, height: u32) {
         self.board.set_board_size(width, height);
     }

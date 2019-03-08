@@ -73,6 +73,20 @@ impl Board {
         self.board.as_ptr()
     }
 
+    pub fn set_board(&mut self, board: &mut [u32]) {
+        let width = self.width;
+        let height = self.height;
+
+        for i in 0..width {
+            for j in 0..height {
+                let index = (i * height + j) as usize;
+                let id: u32 = board[index];
+
+                self.place_block(i, j, id, false);
+            }
+        }
+    }
+
     pub fn spawn_random_piece(&mut self) -> bool {
         let new_piece = piece::Piece::new_random();
         self.active_piece = Some(new_piece);

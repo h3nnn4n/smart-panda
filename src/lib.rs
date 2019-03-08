@@ -1,12 +1,12 @@
+extern crate cfg_if;
 extern crate rand;
 extern crate wasm_bindgen;
-extern crate cfg_if;
 
 mod gamestate;
 mod utils;
 
-use wasm_bindgen::prelude::*;
 use cfg_if::cfg_if;
+use wasm_bindgen::prelude::*;
 
 cfg_if! {
     if #[cfg(feature = "wee_alloc")] {
@@ -19,11 +19,6 @@ cfg_if! {
 #[wasm_bindgen]
 extern "C" {
     fn alert(s: &str);
-}
-
-#[wasm_bindgen]
-pub fn console_log(text: &str) {
-    log!("{}", text);
 }
 
 #[wasm_bindgen]

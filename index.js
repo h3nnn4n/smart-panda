@@ -7,10 +7,6 @@ import * as RandomAgent from "./js/random_agent.js";
 import * as LearningAgent from "./js/learning_agent.js";
 import * as Interface from "./js/user_interface.js";
 
-// Lets use the js call from rust to js again just to make sure
-// that everything (or at least this) is working
-Rust.console_log("Starting");
-
 var gamestate;
 
 const renderLoop = () => {

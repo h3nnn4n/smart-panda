@@ -1,5 +1,9 @@
 /* jshint esversion: 6 */
 
+import {
+    memory
+} from "smart-panda/smart_panda_bg";
+
 const enumValue = (name) => Object.freeze({
     toString: () => name
 });
@@ -42,6 +46,20 @@ const get_board_score = (gamestate) => {
     return board_score;
 };
 
+const get_board_pointer = (gamestate) => {
+    const cellsPtr = gamestate.get_board_pointer();
+    const width = gamestate.get_width();
+    const height = gamestate.get_height();
+
+    return new Uint32Array(memory.buffer, cellsPtr, width * height);
+};
+
+const set_board = (board_pointer, board_data) => {
+    for (let index = 0; index < board_pointer.length; index++) {
+        board_pointer[index] = board_data[index];
+    }
+};
+
 export function LearningAgent(gamestate) {
     // console.log(currentState.toString());
     switch (currentState) {
@@ -80,23 +98,48 @@ const spawn = (gamestate) => {
 };
 
 const find_and_place = (gamestate) => {
-    find_best_plate(gamestate);
+    find_best_place(gamestate);
     rotate(gamestate);
     move(gamestate);
     place(gamestate);
 };
 
-const find_best_plate = (gamestate) => {
-    todo_rotation = rand_int(-3, 3);
+const find_best_place = (gamestate) => {
+    const board_pointer = get_board_pointer(gamestate);
+    const board_data = new Uint32Array(board_pointer);
+
+    // Do stuff
+
+    set_board(board_pointer, board_data);
+
+    todo_rotation = rand_int(0, 3);
     todo_lateral_move = rand_int(-5, 5);
 };
 
 const rotate = (gamestate) => {
-    //
+    if (todo_rotation > 0) {
+        while (todo_rotation > 0) {
+            todo_rotation -= 1;
+
+            gamestate.rotate_active_piece_right();
+        }
+    }
 };
 
 const move = (gamestate) => {
-    //
+    if (todo_lateral_move > 0) {
+        while (todo_lateral_move > 0) {
+            todo_lateral_move -= 1;
+
+            gamestate.move_active_piece_left();
+        }
+    } else if (todo_lateral_move < 0) {
+        while (todo_lateral_move < 0) {
+            todo_lateral_move += 1;
+
+            gamestate.move_active_piece_right();
+        }
+    }
 };
 
 const place = (gamestate) => {

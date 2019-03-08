@@ -1,5 +1,8 @@
+#![allow(dead_code)]
+
 extern crate web_sys;
 
+use self::web_sys::console;
 use cfg_if::cfg_if;
 
 cfg_if! {
@@ -18,4 +21,8 @@ macro_rules! log {
     ( $( $t:tt )* ) => {
         web_sys::console::log_1(&format!( $( $t )* ).into());
     }
+}
+
+pub fn console_log(text: &str) {
+    console::log_1(&text.into());
 }
