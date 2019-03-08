@@ -18,6 +18,8 @@ const renderLoop = () => {
         LearningAgent.LearningAgent(gamestate);
     }
 
+    gamestate.clear_lines();
+
     Draw.draw();
 
     requestAnimationFrame(renderLoop);

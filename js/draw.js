@@ -1,6 +1,7 @@
 /* jslint esversion: 6*/
 
 import * as FeatureFunctions from "./feature_functions.js";
+import * as GameScore from "./game_score.js";
 import {
     memory
 } from "smart-panda/smart_panda_bg";
@@ -105,5 +106,6 @@ export function draw() {
         drawGrid();
         drawCells();
         FeatureFunctions.drawFeatures(gamestate);
+        GameScore.drawFeatures(gamestate);
     }
 }

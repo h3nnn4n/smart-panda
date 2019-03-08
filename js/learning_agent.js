@@ -23,11 +23,10 @@ const rand_int = (min, max) => {
 var currentState = AgentState.GAMESTART;
 
 var feature_weights = [-1, -1];
-const feature_functions = [(a) => {
-    a.get_aggregate_height();
-}, (a) => {
-    a.get_surface_variance();
-}];
+const feature_functions = [
+    (a) => a.get_aggregate_height(),
+    (a) => a.get_surface_variance()
+];
 
 var todo_rotation;
 var todo_lateral_move;
@@ -128,15 +127,33 @@ const find_and_place = (gamestate) => {
 const find_best_place = (gamestate) => {
     store_board(gamestate);
 
-    rotate(gamestate);
-    move(gamestate);
-    place(gamestate);
-    var score = get_board_score(gamestate);
+    var best_rotation;
+    var best_position;
+    var best_score = -Infinity;
 
-    load_board(gamestate);
+    for (let position = -6; position <= 6; position++) {
+        for (let rotation = 0; rotation < 4; rotation++) {
 
-    todo_rotation = rand_int(0, 3);
-    todo_lateral_move = rand_int(-5, 5);
+            todo_rotation = rotation;
+            todo_lateral_move = position;
+
+            rotate(gamestate);
+            move(gamestate);
+            place(gamestate);
+            var score = get_board_score(gamestate);
+
+            if (score > best_score) {
+                best_rotation = rotation;
+                best_position = position;
+                best_score = score;
+            }
+
+            load_board(gamestate);
+        }
+    }
+
+    todo_rotation = best_rotation;
+    todo_lateral_move = best_position;
 };
 
 const rotate = (gamestate) => {

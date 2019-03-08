@@ -72,6 +72,7 @@ impl GameState {
 
     pub fn reset(&mut self) {
         self.points = 0;
+        self.lines_cleared = 0;
         self.board.reset();
     }
 
