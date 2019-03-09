@@ -39,9 +39,43 @@ mod tests {
     use super::*;
 
     #[test]
-    fn zero_number_of_holes() {
+    fn number_of_holes_zero() {
         let mut board = board::Board::new();
         board.set_board_size(10, 18);
+
+        assert_eq!(0, number_of_holes(&board));
+    }
+
+    #[test]
+    fn number_of_holes_dont_count_active_pieces() {
+        let mut board = board::Board::new();
+        board.set_board_size(10, 18);
+
+        board.spawn_piece(2);
+
+        assert_eq!(0, number_of_holes(&board));
+    }
+
+    #[test]
+    fn number_of_holes_triangle_two() {
+        let mut board = board::Board::new();
+        board.set_board_size(10, 18);
+
+        board.spawn_piece(7);
+        while { board.move_active_piece_down_and_try_sleep() } {}
+
+        assert_eq!(2, number_of_holes(&board));
+    }
+
+    #[test]
+    fn number_of_holes_triangle_zero() {
+        let mut board = board::Board::new();
+        board.set_board_size(10, 18);
+
+        board.spawn_piece(7);
+        board.rotate_active_piece_right();
+        board.rotate_active_piece_right();
+        while { board.move_active_piece_down_and_try_sleep() } {}
 
         assert_eq!(0, number_of_holes(&board));
     }
