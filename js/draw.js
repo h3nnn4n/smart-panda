@@ -2,6 +2,7 @@
 
 import * as FeatureFunctions from "./feature_functions.js";
 import * as GameScore from "./game_score.js";
+import * as Fps from "./fps.js";
 import {
     memory
 } from "smart-panda/smart_panda_bg";
@@ -105,6 +106,7 @@ export function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         drawGrid();
         drawCells();
+        Fps.fps.render();
         FeatureFunctions.drawFeatures(gamestate);
         GameScore.drawFeatures(gamestate);
     }

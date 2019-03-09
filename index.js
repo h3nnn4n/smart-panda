@@ -1,7 +1,6 @@
 /* jshint esversion: 6 */
 
 import * as Rust from "smart-panda";
-import * as Fps from "./js/fps.js";
 import * as Draw from "./js/draw.js";
 import * as RandomAgent from "./js/random_agent.js";
 import * as LearningAgent from "./js/learning_agent.js";
@@ -10,8 +9,6 @@ import * as Interface from "./js/user_interface.js";
 var gamestate;
 
 const renderLoop = () => {
-    Fps.fps.render();
-
     if (Interface.useRandomAgent()) {
         RandomAgent.RandomAgent(gamestate);
     } else if (Interface.useLearningAgent()) {

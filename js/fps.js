@@ -1,5 +1,7 @@
 /*jshint esversion: 6 */
 
+// Stolen from some tutorial rust/wasm tutorial
+
 export const fps = new class {
     constructor() {
         this.fps = document.getElementById("fps");
@@ -8,20 +10,20 @@ export const fps = new class {
     }
 
     render() {
-        // Convert the delta time since the last frame render into a measure
-        // of frames per second.
+        if (!this.fps) {
+            return;
+        }
+
         const now = performance.now();
         const delta = now - this.lastFrameTimeStamp;
         this.lastFrameTimeStamp = now;
         const fps = 1 / delta * 1000;
 
-        // Save only the latest 100 timings.
         this.frames.push(fps);
         if (this.frames.length > 100) {
             this.frames.shift();
         }
 
-        // Find the max, min, and mean of our 100 latest timings.
         let min = Infinity;
         let max = -Infinity;
         let sum = 0;
@@ -32,7 +34,6 @@ export const fps = new class {
         }
         let mean = sum / this.frames.length;
 
-        // Render the statistics.
         this.fps.textContent = `
 Frames per Second:
          latest = ${Math.round(fps)}
