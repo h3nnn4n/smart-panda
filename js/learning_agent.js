@@ -9,18 +9,12 @@ import {
     AgentState
 } from "./agent_state.js";
 
-const rand_int = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-};
-
 var currentState = AgentState.GAMESTART;
 
 var todo_rotation;
 var todo_lateral_move;
 
 export function LearningAgent(gamestate) {
-    Brain.tick();
-
     switch (currentState) {
         case AgentState.GAMEOVER:
             game_over_state(gamestate);
@@ -38,6 +32,7 @@ export function LearningAgent(gamestate) {
 }
 
 const game_over_state = (gamestate) => {
+    Brain.game_over_tick(gamestate);
     currentState = AgentState.GAMESTART;
 };
 

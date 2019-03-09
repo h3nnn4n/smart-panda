@@ -7,6 +7,10 @@ const feature_functions = [
     (a) => a.get_surface_variance()
 ];
 
+export const number_of_features = () => {
+    return feature_functions.length;
+};
+
 export function drawFeatures(gamestate) {
     const feature_function_area = document.getElementById("feature-functions");
 
