@@ -2,6 +2,7 @@
 
 mod aggregate_height;
 mod surface_variance;
+mod number_of_holes;
 
 use gamestate::board;
 
