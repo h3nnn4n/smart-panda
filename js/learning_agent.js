@@ -1,8 +1,9 @@
 /* jshint esversion: 6 */
 
+import * as Board from "./board.js";
 import {
-    memory
-} from "smart-panda/smart_panda_bg";
+    get_board_score
+} from "./feature_functions.js";
 
 const enumValue = (name) => Object.freeze({
     toString: () => name
@@ -23,64 +24,11 @@ const rand_int = (min, max) => {
 var currentState = AgentState.GAMESTART;
 
 var feature_weights = [-1, -1];
-const feature_functions = [
-    (a) => a.get_aggregate_height(),
-    (a) => a.get_surface_variance()
-];
 
 var todo_rotation;
 var todo_lateral_move;
 
-var active_piece;
-var board_pointer;
-var board_data;
-
-const get_board_score = (gamestate) => {
-    var board_score = 0;
-
-    var features_scores = feature_functions.map(f => f(gamestate));
-
-    for (let index = 0; index < feature_weights.length; index++) {
-        const weight = feature_weights[index];
-        const score = features_scores[index];
-        board_score += weight * score;
-    }
-
-    return board_score;
-};
-
-const get_board_pointer = (gamestate) => {
-    const cellsPtr = gamestate.get_board_pointer();
-    const width = gamestate.get_width();
-    const height = gamestate.get_height();
-
-    return new Uint32Array(memory.buffer, cellsPtr, width * height);
-};
-
-const store_board = (gamestate) => {
-    board_pointer = get_board_pointer(gamestate);
-    board_data = new Uint32Array(board_pointer);
-    active_piece = gamestate.get_active_piece();
-};
-
-const load_board = (gamestate) => {
-    set_board(board_pointer, board_data);
-    gamestate.build_active_piece(
-        active_piece.get_id(),
-        active_piece.get_x(),
-        active_piece.get_y(),
-        active_piece.get_rotation()
-    );
-};
-
-const set_board = (board_pointer, board_data) => {
-    for (let index = 0; index < board_pointer.length; index++) {
-        board_pointer[index] = board_data[index];
-    }
-};
-
 export function LearningAgent(gamestate) {
-    // console.log(currentState.toString());
     switch (currentState) {
         case AgentState.GAMEOVER:
             game_over_state(gamestate);
@@ -125,7 +73,7 @@ const find_and_place = (gamestate) => {
 };
 
 const find_best_place = (gamestate) => {
-    store_board(gamestate);
+    Board.store_board(gamestate);
 
     var best_rotation;
     var best_position;
@@ -140,7 +88,7 @@ const find_best_place = (gamestate) => {
             rotate(gamestate);
             move(gamestate);
             place(gamestate);
-            var score = get_board_score(gamestate);
+            var score = get_board_score(gamestate, feature_weights);
 
             if (score > best_score) {
                 best_rotation = rotation;
@@ -148,7 +96,7 @@ const find_best_place = (gamestate) => {
                 best_score = score;
             }
 
-            load_board(gamestate);
+            Board.load_board(gamestate);
         }
     }
 
