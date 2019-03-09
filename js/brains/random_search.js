@@ -31,7 +31,12 @@ const learn = () => {
     }
 
     trial_scores = [];
-    trial_feature_weights = perturbate_best_feature_weights();
+
+    if (mean(scores) <= 1) {
+        trial_feature_weights = random_feature_weights();
+    } else {
+        trial_feature_weights = perturbate_best_feature_weights();
+    }
 };
 
 /**
