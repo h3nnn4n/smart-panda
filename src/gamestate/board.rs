@@ -121,10 +121,16 @@ impl Board {
         self.sleep_active_piece();
     }
 
-    pub fn spawn_piece(&mut self, id: u32) {
+    pub fn spawn_piece(&mut self, id: u32) -> bool {
         let new_piece = piece::Piece::spawn_piece(id);
         self.active_piece = Some(new_piece);
-        self.update();
+
+        if self.can_active_piece_be_spawned() {
+            self.update();
+            true
+        } else {
+            false
+        }
     }
 
     pub fn step(&mut self) {
@@ -256,8 +262,10 @@ impl Board {
 
     pub fn clearable_lines(&self) -> u32 {
         let mut clearable = 0_u32;
+
         for i in 0..self.height {
             let mut can_clear = true;
+
             for j in 0..self.width {
                 if self.get_block(j, i) == 0 {
                     can_clear = false;
@@ -275,28 +283,46 @@ impl Board {
 
     pub fn clear_lines(&mut self) -> u32 {
         let mut cleared = 0_u32;
-        for i in 0..self.height - 0 {
-            let mut can_clear = true;
-            for j in 0..self.width {
-                if self.get_block(j, i) == 0 {
-                    can_clear = false;
-                    break;
-                }
-            }
+        let mut cleared_any = true;
 
-            if can_clear {
-                for j in i..self.height {
+        while cleared_any {
+            cleared_any = false;
+
+            for y in (0..self.height).rev() {
+                if self.can_clear_line(y) {
+                    self.move_board_slice_down(y);
+                    cleared_any = true;
                     cleared += 1;
-                    for x in 0..self.width {
-                        let w = self.get_block(x, j - 1);
-                        self.place_block(x, j, w, false);
-                        self.place_block(x, j - 1, 0, false);
-                    }
+
+                    break;
                 }
             }
         }
 
         cleared
+    }
+
+    fn can_clear_line(&self, y: u32) -> bool {
+        for x in 0..self.width {
+            if self.get_block(x, y) == 0 {
+                return false;
+            }
+        }
+
+        true
+    }
+
+    fn move_board_slice_down(&mut self, y_cutoff: u32) {
+        for y in (1..(y_cutoff + 1)).rev() {
+            for x in 0..self.width {
+                let block_above = self.get_block(x, y - 1);
+                self.place_block(x, y, block_above, false);
+            }
+        }
+
+        for x in 0..self.width {
+            self.place_block(x, 0, 0, false);
+        }
     }
 
     pub fn place_o_piece(&mut self, x: u32, y: u32) -> bool {
@@ -842,5 +868,30 @@ mod tests {
         board.update();
 
         assert_eq!(0, board.clearable_lines());
+    }
+
+    #[test]
+    fn move_down_pieces_after_clear() {
+        let mut board = Board::new();
+        board.set_board_size(10, 18);
+
+        board.place_o_piece(1, 17);
+        board.place_o_piece(3, 17);
+        board.place_o_piece(5, 17);
+        board.place_o_piece(7, 17);
+        board.place_o_piece(9, 17);
+
+        board.place_o_piece(7, 15);
+        board.place_o_piece(9, 15);
+
+        // Test that there are two lines to clear and that they were cleared
+        assert_eq!(2, board.clearable_lines());
+        assert_eq!(2, board.clear_lines());
+        assert_eq!(0, board.clearable_lines());
+
+        // Test that the board was shifted down by two lines
+        assert!(board.get_block(1, 17) == 0);
+        assert!(board.get_block(9, 17) != 0);
+        assert!(board.get_block(9, 15) == 0);
     }
 }

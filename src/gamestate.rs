@@ -76,8 +76,8 @@ impl GameState {
         self.board.reset();
     }
 
-    pub fn spawn_piece(&mut self, id: u32) {
-        self.board.spawn_piece(id);
+    pub fn spawn_piece(&mut self, id: u32) -> bool {
+        self.board.spawn_piece(id)
     }
 
     pub fn spawn_random_piece(&mut self) -> bool {
