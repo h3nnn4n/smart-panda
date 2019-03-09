@@ -6,6 +6,8 @@ import {
 
 const total_samples = 5;
 
+var best_lines_cleared = 0;
+
 var scores = [];
 var feature_weights = [];
 
@@ -14,6 +16,8 @@ var trial_scores = [];
 var trial_samples_left = total_samples;
 
 export function game_over_tick(gamestate) {
+    update_best_lines_cleared(gamestate);
+
     trial_scores.push(gamestate.get_lines_cleared());
     if (tick_samples()) {
         learn();
@@ -23,6 +27,17 @@ export function game_over_tick(gamestate) {
 export function get_feature_weights() {
     return trial_feature_weights;
 }
+
+export const get_best_lines_cleared = () => {
+    return best_lines_cleared;
+};
+
+const update_best_lines_cleared = (gamestate) => {
+    best_lines_cleared = Math.max(
+        best_lines_cleared,
+        gamestate.get_lines_cleared()
+    );
+};
 
 const learn = () => {
     if (mean(trial_scores) > mean(scores)) {

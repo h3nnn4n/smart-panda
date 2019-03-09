@@ -31,8 +31,6 @@ export function initCanvas(gamestate_) {
 
     canvas.height = (CELL_SIZE + 1) * height + 2;
     canvas.width = (CELL_SIZE + 1) * width + 2;
-
-    console.log('board size is: ', width, height);
 }
 
 function drawGrid() {
@@ -108,6 +106,6 @@ export function draw() {
         drawCells();
         Fps.fps.render();
         FeatureFunctions.drawFeatures(gamestate);
-        GameScore.drawFeatures(gamestate);
+        GameScore.drawScore(gamestate);
     }
 }
