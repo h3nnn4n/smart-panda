@@ -1,21 +1,13 @@
-/* jshint esversion: 6 */
+/* jslint esversion: 6 */
 
 import * as Board from "./board.js";
+import * as Brain from "./brain.js";
 import {
     get_board_score
 } from "./feature_functions.js";
-
-const enumValue = (name) => Object.freeze({
-    toString: () => name
-});
-
-const AgentState = Object.freeze({
-    GAMEOVER: enumValue("AgentState.GAMEOVER"),
-    LEARN: enumValue("AgentState.LEARN"),
-    SPAWN: enumValue("AgentState.SPAWN"),
-    GAMESTART: enumValue("AgentState.GAMESTART"),
-    FIND_AND_PLACE: enumValue("AgentState.FIND_AND_PLACE"),
-});
+import {
+    AgentState
+} from "./agent_state.js";
 
 const rand_int = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -23,12 +15,12 @@ const rand_int = (min, max) => {
 
 var currentState = AgentState.GAMESTART;
 
-var feature_weights = [-1, -1];
-
 var todo_rotation;
 var todo_lateral_move;
 
 export function LearningAgent(gamestate) {
+    Brain.tick();
+
     switch (currentState) {
         case AgentState.GAMEOVER:
             game_over_state(gamestate);
@@ -88,7 +80,10 @@ const find_best_place = (gamestate) => {
             rotate(gamestate);
             move(gamestate);
             place(gamestate);
-            var score = get_board_score(gamestate, feature_weights);
+            var score = get_board_score(
+                gamestate,
+                Brain.get_feature_weights()
+            );
 
             if (score > best_score) {
                 best_rotation = rotation;
