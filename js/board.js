@@ -30,6 +30,8 @@ export function load_board(gamestate) {
         active_piece.get_y(),
         active_piece.get_rotation()
     );
+
+    store_board(gamestate);
 }
 
 const set_board = (board_pointer, board_data) => {
