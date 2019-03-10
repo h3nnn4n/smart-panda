@@ -16,6 +16,14 @@ export const get_current_feature_weights = () => {
     return brain.get_current_feature_weights();
 };
 
+export const get_current_mean = () => {
+    return brain.get_current_mean();
+};
+
+export const get_best_mean = () => {
+    return brain.get_best_mean();
+};
+
 export const get_best_lines_cleared = () => {
     return brain.get_best_lines_cleared();
 };

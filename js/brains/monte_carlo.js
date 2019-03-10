@@ -38,6 +38,14 @@ export const get_best_lines_cleared = () => {
     return best_lines_cleared;
 };
 
+export const get_current_mean = () => {
+    return mean(trial_scores);
+};
+
+export const get_best_mean = () => {
+    return mean(scores);
+};
+
 const update_best_lines_cleared = (gamestate) => {
     best_lines_cleared = Math.max(
         best_lines_cleared,
@@ -91,6 +99,10 @@ const tick_samples = () => {
 };
 
 const mean = (values) => {
+    if (!values || values.length == 0) {
+        return 0;
+    }
+
     const sum = values.reduce((previous, current) => current += previous);
     const avg = sum / values.length;
 
