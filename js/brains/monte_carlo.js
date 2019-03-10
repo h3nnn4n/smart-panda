@@ -64,7 +64,7 @@ const learn = () => {
 };
 
 const perturbate_trial_feature_weights = () => {
-    if (mean(scores) <= 1) {
+    if (mean(scores) <= 4) {
         trial_feature_weights = random_feature_weights();
     } else {
         trial_feature_weights = perturbate_from_best_feature_weights();
@@ -78,7 +78,10 @@ const perturbate_trial_feature_weights = () => {
 const tick_samples = () => {
     trial_samples_left -= 1;
 
-    if (trial_samples_left < 0 || mean(trial_scores) <= 5) {
+    if (trial_samples_left < 0 ||
+        mean(trial_scores) <= 5 ||
+        (mean(trial_scores) < mean(scores) / 2 && trial_scores.length > 3)
+    ) {
         trial_samples_left = total_samples;
 
         return true;
