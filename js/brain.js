@@ -1,15 +1,19 @@
 /* jslint esversion: 6 */
 
-import * as RandomSearch from "./brains/random_search.js";
+import * as MonteCarlo from "./brains/monte_carlo.js";
 
-const brain = RandomSearch;
+const brain = MonteCarlo;
 
 export const game_over_tick = (gamestate) => {
     brain.game_over_tick(gamestate);
 };
 
-export const get_feature_weights = () => {
-    return brain.get_feature_weights();
+export const get_best_feature_weights = () => {
+    return brain.get_best_feature_weights();
+};
+
+export const get_current_feature_weights = () => {
+    return brain.get_current_feature_weights();
 };
 
 export const get_best_lines_cleared = () => {

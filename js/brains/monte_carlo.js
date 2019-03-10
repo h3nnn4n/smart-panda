@@ -4,7 +4,9 @@ import {
     number_of_features
 } from "../feature_functions";
 
-const total_samples = 5;
+const temperature = 1.0;
+
+const total_samples = 10;
 
 var best_lines_cleared = 0;
 
@@ -24,7 +26,11 @@ export function game_over_tick(gamestate) {
     }
 }
 
-export function get_feature_weights() {
+export function get_best_feature_weights() {
+    return feature_weights;
+}
+
+export function get_current_feature_weights() {
     return trial_feature_weights;
 }
 
@@ -43,14 +49,25 @@ const learn = () => {
     if (mean(trial_scores) > mean(scores)) {
         feature_weights = [...trial_feature_weights];
         scores = [...trial_scores];
+    } else {
+        const delta_energy = mean(scores) - mean(trial_scores);
+
+        if (Math.exp(-delta_energy / temperature) >= Math.random()) {
+            feature_weights = [...trial_feature_weights];
+            scores = [...trial_scores];
+        }
     }
 
     trial_scores = [];
 
+    perturbate_trial_feature_weights();
+};
+
+const perturbate_trial_feature_weights = () => {
     if (mean(scores) <= 1) {
         trial_feature_weights = random_feature_weights();
     } else {
-        trial_feature_weights = perturbate_best_feature_weights();
+        trial_feature_weights = perturbate_from_best_feature_weights();
     }
 };
 
@@ -61,7 +78,7 @@ const learn = () => {
 const tick_samples = () => {
     trial_samples_left -= 1;
 
-    if (trial_samples_left < 0) {
+    if (trial_samples_left < 0 || mean(trial_scores) <= 5) {
         trial_samples_left = total_samples;
 
         return true;
@@ -91,7 +108,7 @@ const random_feature_weights = () => {
     return weights;
 };
 
-const perturbate_best_feature_weights = () => {
+const perturbate_from_best_feature_weights = () => {
     const magnitude = 1;
 
     for (let index = 0; index < number_of_features(); index++) {

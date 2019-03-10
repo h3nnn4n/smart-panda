@@ -12,20 +12,30 @@ export function drawScore(gamestate) {
     score_string += Print.sprintf("lines_cleared: %3d\n", gamestate.get_lines_cleared());
     score_string += Print.sprintf("         best: %3d\n", Brain.get_best_lines_cleared());
 
-    score_string += get_weight_string();
+    score_string += get_best_weight_string();
+    score_string += get_current_weight_string();
 
     score_area.textContent = score_string;
 }
 
-const get_weight_string = () => {
-    var weights = Brain.get_feature_weights();
+const get_current_weight_string = () => {
+    var weights = Brain.get_current_feature_weights();
     var weight_string = "\n";
 
     weights.forEach(weight => {
         weight_string += Print.sprintf("%6.2f ", weight);
     });
 
-    weight_string += '\n';
+    return weight_string;
+};
+
+const get_best_weight_string = () => {
+    var weights = Brain.get_best_feature_weights();
+    var weight_string = "\n";
+
+    weights.forEach(weight => {
+        weight_string += Print.sprintf("%6.2f ", weight);
+    });
 
     return weight_string;
 };

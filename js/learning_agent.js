@@ -77,7 +77,7 @@ const find_best_place = (gamestate) => {
             place(gamestate);
             var score = get_board_score(
                 gamestate,
-                Brain.get_feature_weights()
+                Brain.get_current_feature_weights()
             );
 
             if (score > best_score) {
