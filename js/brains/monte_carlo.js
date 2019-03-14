@@ -72,7 +72,7 @@ const learn = () => {
 };
 
 const perturbate_trial_feature_weights = () => {
-    if (mean(scores) <= 4) {
+    if (mean(scores) <= 4 || Math.random() < 0.1) {
         trial_feature_weights = random_feature_weights();
     } else {
         if (Math.random() < 0.5) {
