@@ -75,7 +75,11 @@ const perturbate_trial_feature_weights = () => {
     if (mean(scores) <= 4) {
         trial_feature_weights = random_feature_weights();
     } else {
-        trial_feature_weights = perturbate_from_best_feature_weights();
+        if (Math.random() < 0.5) {
+            trial_feature_weights = perturbate_from_best_feature_weights();
+        } else {
+            trial_feature_weights = perturbate_one_variable_from_best_feature_weights();
+        }
     }
 };
 
@@ -131,6 +135,19 @@ const perturbate_from_best_feature_weights = () => {
     }
 
     return trial_feature_weights;
+};
+
+const perturbate_one_variable_from_best_feature_weights = () => {
+    const magnitude = 1;
+    const index = rand_int(0, trial_feature_weights.length - 1);
+
+    trial_feature_weights[index] = feature_weights[index] + rand_float(-magnitude, magnitude);
+
+    return trial_feature_weights;
+};
+
+var rand_int = (minimum, maximum) => {
+    return Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
 };
 
 const initialize = () => {
