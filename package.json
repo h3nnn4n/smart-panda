@@ -1,18 +1,16 @@
 {
-  "name": "create-wasm-app",
+  "name": "smart-panda",
   "version": "0.1.0",
-  "description": "create an app to consume rust-generated wasm packages",
+  "description": "An AI playground where JavaScript meets Rust",
   "main": "index.js",
-  "bin": {
-    "create-wasm-app": ".bin/create-wasm-app.js"
-  },
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "start": "webpack-dev-server"
+    "start": "webpack-dev-server",
+    "test": "jasmine"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rustwasm/create-wasm-app.git"
+    "url": "git+https://github.com/h3nnn4n/smart-panda"
   },
   "keywords": [
     "webassembly",
@@ -20,20 +18,19 @@
     "rust",
     "webpack"
   ],
-  "author": "Ashley Williams <ashley666ashley@gmail.com>",
-  "license": "(MIT OR Apache-2.0)",
-  "bugs": {
-    "url": "https://github.com/rustwasm/create-wasm-app/issues"
-  },
-  "homepage": "https://github.com/rustwasm/create-wasm-app#readme",
+  "author": "Renan S Silva (h3nnn4n) <uber.renan@gmail.com>",
+  "homepage": "https://github.com/h3nnn4n/smart-panda",
   "devDependencies": {
     "copy-webpack-plugin": "^5.0.0",
     "hello-wasm-pack": "^0.1.0",
-    "webpack": "^4.29.3",
+    "jasmine": "^3.3.1",
+    "webpack": "^4.29.6",
     "webpack-cli": "^3.2.3",
-    "webpack-dev-server": "^3.1.5"
+    "webpack-dev-server": "^3.1.5",
+    "webpack-shell-plugin": "^0.5.0"
   },
   "dependencies": {
+    "jasmine-core": "^3.3.0",
     "sprintf-js": "^1.1.2"
   }
 }
