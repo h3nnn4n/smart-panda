@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 
 mod aggregate_height;
+mod covered_cells;
 mod delta_height;
 mod number_of_holes;
 mod surface_variance;

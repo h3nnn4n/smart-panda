@@ -6,7 +6,8 @@ const feature_functions = [
     (a) => a.get_aggregate_height(),
     (a) => a.get_surface_variance(),
     (a) => a.get_number_of_holes(),
-    (a) => a.get_delta_height()
+    (a) => a.get_delta_height(),
+    (a) => a.get_covered_cells()
 ];
 
 export const number_of_features = () => {
@@ -22,6 +23,7 @@ export function drawFeatures(gamestate) {
     feature_string += Print.sprintf("surface_variance: %3d\n", gamestate.get_surface_variance());
     feature_string += Print.sprintf(" number_of_holes: %3d\n", gamestate.get_number_of_holes());
     feature_string += Print.sprintf("    delta_height: %3d\n", gamestate.get_delta_height());
+    feature_string += Print.sprintf("   covered_cells: %3d\n", gamestate.get_covered_cells());
 
     feature_function_area.textContent = feature_string;
 }
