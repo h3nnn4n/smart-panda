@@ -5,6 +5,7 @@ mod covered_cells;
 mod delta_height;
 mod number_of_holes;
 mod surface_variance;
+mod vertical_roughness;
 
 use gamestate::board;
 
