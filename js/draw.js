@@ -1,5 +1,3 @@
-/* jslint esversion: 6*/
-
 import * as FeatureFunctions from "./feature_functions.js";
 import * as GameScore from "./game_score.js";
 import * as Fps from "./fps.js";

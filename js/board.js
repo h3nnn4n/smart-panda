@@ -1,5 +1,3 @@
-/* jslint esversion: 6 */
-
 import {
     memory
 } from "smart-panda/smart_panda_bg";

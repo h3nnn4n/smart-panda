@@ -1,5 +1,3 @@
-/* jshint esversion: 6 */
-
 import * as Print from "sprintf-js";
 
 const feature_functions = [

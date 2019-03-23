@@ -1,5 +1,3 @@
-/* jshint esversion: 6 */
-
 var current_agent_mode;
 
 function radio_mode_change_event() {

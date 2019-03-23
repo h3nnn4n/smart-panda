@@ -1,5 +1,3 @@
-/* jslint esversion: 6 */
-
 const enumValue = (name) => Object.freeze({
     toString: () => name
 });

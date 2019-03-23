@@ -1,5 +1,3 @@
-/* jslint esversion: 6 */
-
 import * as Board from "./board.js";
 import * as Brain from "./brain.js";
 import {

@@ -1,5 +1,3 @@
-/* jslint esversion: 6 */
-
 import * as MonteCarlo from "./brains/monte_carlo.js";
 
 const brain = MonteCarlo;
