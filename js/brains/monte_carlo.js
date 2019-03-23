@@ -103,7 +103,7 @@ const tick_samples = () => {
 };
 
 const mean = (values) => {
-    if (!values || values.length == 0) {
+    if (!values || values.length === 0) {
         return 0;
     }
 

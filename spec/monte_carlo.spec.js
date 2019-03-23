@@ -3,6 +3,10 @@ import * as FeatureFunctions from "../js/feature_functions";
 import {
     expect
 } from "chai";
+import {
+    describe,
+    it
+} from "mocha";
 
 describe("MonteCarlo", () => {
     describe("after init", () => {
