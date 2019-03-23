@@ -3,7 +3,7 @@ import * as GameScore from "./game_score.js";
 import * as Fps from "./fps.js";
 import {
     memory
-} from "smart-panda/smart_panda_bg";
+} from "../pkg/smart_panda_bg";
 
 const CELL_SIZE = 10; // px
 const GRID_COLOR = "#CCCCCC";

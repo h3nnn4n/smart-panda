@@ -1,6 +1,6 @@
 import {
     memory
-} from "smart-panda/smart_panda_bg";
+} from "../pkg/smart_panda_bg";
 
 var active_piece;
 var board_pointer;
