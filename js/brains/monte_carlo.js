@@ -166,19 +166,19 @@ if (detectMocha()) {
 
     describe("Monte Carlo private interface", () => {
         describe("mean", () => {
-            it("mean of nil is zero", () => {
+            it("mean of undefined is zero", () => {
                 expect(mean()).to.equal(0);
             });
 
-            it("mean of []] is zero", () => {
+            it("mean of [] is zero", () => {
                 expect(mean([])).to.equal(0);
             });
 
-            it("mean of [5]] is five", () => {
+            it("mean of [5] is five", () => {
                 expect(mean([5])).to.equal(5);
             });
 
-            it("mean of [1, 5]] is 3", () => {
+            it("mean of [1, 5] is 3", () => {
                 expect(mean([1, 5])).to.equal(3);
             });
         });
