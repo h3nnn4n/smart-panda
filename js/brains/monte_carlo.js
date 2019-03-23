@@ -157,3 +157,30 @@ const initialize = () => {
 };
 
 initialize();
+
+var detectMocha = require('detect-mocha');
+
+if (detectMocha()) {
+    const chai = require('chai'),
+        expect = chai.expect;
+
+    describe("Monte Carlo private interface", () => {
+        describe("mean", () => {
+            it("mean of nil is zero", () => {
+                expect(mean()).to.equal(0);
+            });
+
+            it("mean of []] is zero", () => {
+                expect(mean([])).to.equal(0);
+            });
+
+            it("mean of [5]] is five", () => {
+                expect(mean([5])).to.equal(5);
+            });
+
+            it("mean of [1, 5]] is 3", () => {
+                expect(mean([1, 5])).to.equal(3);
+            });
+        });
+    });
+}

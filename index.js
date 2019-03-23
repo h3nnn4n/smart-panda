@@ -1,6 +1,6 @@
 /* jshint esversion: 6 */
 
-import * as Rust from "smart-panda";
+import * as Rust from "./pkg/smart_panda";
 import * as Draw from "./js/draw.js";
 import * as RandomAgent from "./js/random_agent.js";
 import * as LearningAgent from "./js/learning_agent.js";

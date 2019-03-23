@@ -8,7 +8,7 @@ import {
     it
 } from "mocha";
 
-describe("MonteCarlo", () => {
+describe("Monte Carlo public interface", () => {
     describe("after init", () => {
         it("best_feature_weights have the currect number of elements", () => {
             const best_feature_weights = MonteCarlo.get_best_feature_weights();
