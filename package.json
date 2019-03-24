@@ -6,8 +6,8 @@
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "start": "webpack-dev-server",
-    "test": "mocha --require babel-core/register spec/**/*.spec.js js/**/*.js",
-    "watch-test": "mocha -watch --require babel-core/register spec/**/*.spec.js js/**/*.js"
+    "test": "mochapack spec/**/*.spec.js",
+    "watch-test": "mochapack --watch spec/**/*.spec.js"
   },
   "repository": {
     "type": "git",
