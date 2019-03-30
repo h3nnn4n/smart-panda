@@ -8,8 +8,6 @@ import {
     it
 } from "mocha";
 
-// TODO: Async import for smart-panda
-
 describe("Board", () => {
     describe.skip("store_board", () => {
         it('runs', () => {

@@ -1,4 +1,5 @@
-import * as Rust from "./pkg/smart_panda";
+var Rust;
+
 import * as Draw from "./js/draw.js";
 import * as RandomAgent from "./js/random_agent.js";
 import * as LearningAgent from "./js/learning_agent.js";
@@ -30,5 +31,7 @@ const init = () => {
     requestAnimationFrame(renderLoop);
 };
 
-
-init();
+(() => import( /* webpackChunkName: "smart_panda" */ './pkg/smart_panda').then(module => {
+    Rust = module;
+    init();
+}))();
