@@ -1,21 +1,19 @@
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const path = require('path');
-
+const glob = require("glob");
 
 module.exports = {
-  entry: [
-    "core-js/modules/es6.promise",
-    "core-js/modules/es6.array.iterator",
-    "./bootstrap.js"
-  ],
+  entry: [].concat.apply([], [
+    './spec/runner.js',
+  ]),
   output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "bootstrap.js",
+    path: path.resolve(__dirname, "test-dist"),
+    filename: "index.js",
   },
   target: 'web',
   mode: "development",
   plugins: [
-    new CopyWebpackPlugin(['index.html'])
+    new CopyWebpackPlugin(['test.html'])
   ],
   module: {
     rules: [{
@@ -33,7 +31,15 @@ module.exports = {
             plugins: ['@babel/plugin-syntax-dynamic-import']
           }
         }
+      },
+      {
+        test: /spec\.js$/,
+        use: 'mocha-loader',
+        exclude: /node_modules/
       }
     ]
-  }
+  },
+  node: {
+    fs: 'empty'
+  },
 };

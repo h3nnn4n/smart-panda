@@ -1,17 +1,23 @@
-import {
-    memory
-} from "../pkg/smart_panda_bg";
+var wasm_module;
+
+(() => import( /* webpackChunkName: "smart_panda_bg" */ '../pkg/smart_panda_bg').then(module => {
+    wasm_module = module;
+}))();
 
 var active_piece;
 var board_pointer;
 var board_data;
+
+const build_memory_buffer = (cellsPtr, length) => {
+    return new Uint32Array(wasm_module.memory.buffer, cellsPtr, length);
+};
 
 const get_board_pointer = (gamestate) => {
     const cellsPtr = gamestate.get_board_pointer();
     const width = gamestate.get_width();
     const height = gamestate.get_height();
 
-    return new Uint32Array(memory.buffer, cellsPtr, width * height);
+    return build_memory_buffer(cellsPtr, width * height);
 };
 
 export function store_board(gamestate) {

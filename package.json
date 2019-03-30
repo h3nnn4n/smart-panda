@@ -6,8 +6,8 @@
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "start": "webpack-dev-server",
-    "test": "mochapack spec/**/*.spec.js",
-    "watch-test": "mochapack --watch spec/**/*.spec.js"
+    "test": "mochapack --webpack-config webpack-test.config.js --require jsdom-global/register spec/**/*.spec.js",
+    "watch-test": "mochapack --webpack-config webpack-test.config.js --watch spec/**/*.spec.js"
   },
   "repository": {
     "type": "git",
@@ -29,10 +29,15 @@
     "chai": "^4.2.0",
     "copy-webpack-plugin": "^5.0.0",
     "detect-mocha": "^0.1.0",
+    "es6-promise": "^4.2.6",
     "eslint": "^5.15.3",
     "global-var": "^0.1.0",
     "hello-wasm-pack": "^0.1.0",
+    "isomorphic-fetch": "^2.2.1",
+    "jsdom": "^14.0.0",
+    "jsdom-global": "^3.0.2",
     "mocha": "^6.0.2",
+    "mocha-loader": "^2.0.1",
     "mochapack": "^1.1.0",
     "sinon": "^7.3.0",
     "webpack": "^4.29.6",

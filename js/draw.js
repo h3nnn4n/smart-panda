@@ -1,9 +1,12 @@
 import * as FeatureFunctions from "./feature_functions.js";
 import * as GameScore from "./game_score.js";
 import * as Fps from "./fps.js";
-import {
-    memory
-} from "../pkg/smart_panda_bg";
+
+var wasm_module;
+
+(() => import( /* webpackChunkName: "smart_panda_bg" */ '../pkg/smart_panda_bg').then(module => {
+    wasm_module = module;
+}))();
 
 const CELL_SIZE = 10; // px
 const GRID_COLOR = "#CCCCCC";
@@ -51,7 +54,7 @@ function drawGrid() {
 
 function drawCells() {
     const cellsPtr = gamestate.get_board_pointer();
-    const cells = new Uint32Array(memory.buffer, cellsPtr, width * height);
+    const cells = new Uint32Array(wasm_module.memory.buffer, cellsPtr, width * height);
 
     ctx.beginPath();
 
