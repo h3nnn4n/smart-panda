@@ -1,4 +1,8 @@
-/* jslint esversion: 6 */
+import {
+    mean,
+    rand_int,
+    rand_float
+} from '../utils';
 
 import {
     number_of_features
@@ -54,6 +58,22 @@ const update_best_lines_cleared = (gamestate) => {
 };
 
 const learn = () => {
+    // learn_monte_carlo();
+    learn_greedy();
+
+    trial_scores = [];
+
+    perturbate_trial_feature_weights();
+};
+
+const learn_greedy = () => {
+    if (mean(trial_scores) > mean(scores)) {
+        feature_weights = [...trial_feature_weights];
+        scores = [...trial_scores];
+    }
+};
+
+const learn_monte_carlo = () => {
     if (mean(trial_scores) > mean(scores)) {
         feature_weights = [...trial_feature_weights];
         scores = [...trial_scores];
@@ -65,10 +85,6 @@ const learn = () => {
             scores = [...trial_scores];
         }
     }
-
-    trial_scores = [];
-
-    perturbate_trial_feature_weights();
 };
 
 const perturbate_trial_feature_weights = () => {
@@ -102,21 +118,6 @@ const tick_samples = () => {
     return false;
 };
 
-const mean = (values) => {
-    if (!values || values.length === 0) {
-        return 0;
-    }
-
-    const sum = values.reduce((previous, current) => current += previous);
-    const avg = sum / values.length;
-
-    return avg;
-};
-
-const rand_float = (min, max) => {
-    return Math.random() * (max - min + 1) + min;
-};
-
 const random_feature_weights = () => {
     var weights = [];
 
@@ -146,41 +147,11 @@ const perturbate_one_variable_from_best_feature_weights = () => {
     return trial_feature_weights;
 };
 
-var rand_int = (minimum, maximum) => {
-    return Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
-};
-
 const initialize = () => {
     trial_feature_weights = random_feature_weights();
     feature_weights = random_feature_weights();
     scores = [0];
 };
 
+
 initialize();
-
-var detectMocha = require('detect-mocha');
-
-if (detectMocha()) {
-    const chai = require('chai'),
-        expect = chai.expect;
-
-    describe("Monte Carlo private interface", () => {
-        describe("mean", () => {
-            it("mean of undefined is zero", () => {
-                expect(mean()).to.equal(0);
-            });
-
-            it("mean of [] is zero", () => {
-                expect(mean([])).to.equal(0);
-            });
-
-            it("mean of [5] is five", () => {
-                expect(mean([5])).to.equal(5);
-            });
-
-            it("mean of [1, 5] is 3", () => {
-                expect(mean([1, 5])).to.equal(3);
-            });
-        });
-    });
-}

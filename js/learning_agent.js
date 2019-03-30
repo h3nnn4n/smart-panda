@@ -1,6 +1,9 @@
 import * as Board from "./board.js";
 import * as Brain from "./brain.js";
 import {
+    suffled_array
+} from './utils';
+import {
     get_board_score
 } from "./feature_functions.js";
 import {
@@ -63,8 +66,11 @@ const find_best_place = (gamestate) => {
     var best_rotation;
     var best_position;
     var best_score = -Infinity;
+    var shuffled_positions = suffled_array(6, 13);
 
-    for (let position = -6; position <= 6; position++) {
+    for (let i = 0; i < shuffled_positions.length; i++) {
+        const position = shuffled_positions[i];
+
         for (let rotation = 0; rotation < 4; rotation++) {
 
             todo_rotation = rotation;
