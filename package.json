@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --config webpack.config.js",
-    "start": "webpack-dev-server",
-    "test": "mochapack --webpack-config webpack-test.config.js --require jsdom-global/register spec/**/*.spec.js",
-    "watch-test": "mochapack --webpack-config webpack-test.config.js --watch spec/**/*.spec.js"
+    "dev-server": "webpack-dev-server --config webpack.config.js",
+    "test-server": "webpack-dev-server --config webpack-test.config.js"
   },
   "repository": {
     "type": "git",
