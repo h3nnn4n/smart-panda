@@ -8,7 +8,7 @@ module.exports = {
   ]),
   output: {
     path: path.resolve(__dirname, "test-dist"),
-    filename: "index.js",
+    filename: "test_index.js",
   },
   target: 'web',
   mode: "development",
