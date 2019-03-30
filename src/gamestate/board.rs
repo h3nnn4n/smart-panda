@@ -162,7 +162,7 @@ impl Board {
             return false;
         }
 
-        true // FIXME
+        true // FIXME Check if the piece can rotate
     }
 
     fn can_active_piece_rotate_right(&self) -> bool {
@@ -170,7 +170,7 @@ impl Board {
             return false;
         }
 
-        true // FIXME
+        true // FIXME Check if the piece can rotate
     }
 
     pub fn rotate_active_piece_left(&mut self) -> bool {
