@@ -1,5 +1,3 @@
-/* jshint esversion: 6 */
-
 import * as Rust from "./pkg/smart_panda";
 import * as Draw from "./js/draw.js";
 import * as RandomAgent from "./js/random_agent.js";
