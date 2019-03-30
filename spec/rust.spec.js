@@ -36,4 +36,23 @@ describe("Rust Wasm Interface", () => {
             expect(gamestate.clear_lines()).to.equal(2);
         });
     });
+
+    describe("Active piece", () => {
+        describe("#has_active_piece", () => {
+            it('yes', function () {
+                let gamestate = this.Rust.get_new_gamestate();
+                gamestate.set_board_size(10, 20);
+                gamestate.spawn_piece(2);
+
+                expect(gamestate.has_active_piece()).to.equal(true);
+            });
+
+            it('no', function () {
+                let gamestate = this.Rust.get_new_gamestate();
+                gamestate.set_board_size(10, 20);
+
+                expect(gamestate.has_active_piece()).to.equal(false);
+            });
+        });
+    });
 });

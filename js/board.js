@@ -23,7 +23,10 @@ const get_board_pointer = (gamestate) => {
 export function store_board(gamestate) {
     board_pointer = get_board_pointer(gamestate);
     board_data = new Uint32Array(board_pointer);
-    active_piece = gamestate.get_active_piece();
+
+    if (gamestate.has_active_piece()) {
+        active_piece = gamestate.get_active_piece();
+    }
 }
 
 export function load_board(gamestate) {
