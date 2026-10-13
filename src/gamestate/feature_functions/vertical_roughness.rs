@@ -1,9 +1,9 @@
 #![allow(dead_code)]
 
-use gamestate::board;
+use crate::gamestate::board;
 use wasm_bindgen::prelude::*;
 
-use gamestate::GameState;
+use crate::gamestate::GameState;
 
 pub fn vertical_roughness(board: &board::Board) -> u32 {
     let mut total_vertical_roughness = 0;

@@ -1,5 +1,6 @@
-var Rust;
+import init, * as Rust from "./pkg/smart_panda.js";
 
+import * as Board from "./js/board.js";
 import * as Draw from "./js/draw.js";
 import * as RandomAgent from "./js/random_agent.js";
 import * as LearningAgent from "./js/learning_agent.js";
@@ -21,7 +22,7 @@ const renderLoop = () => {
     requestAnimationFrame(renderLoop);
 };
 
-const init = () => {
+const start = () => {
     Interface.initInterface();
     gamestate = Rust.get_new_gamestate();
     gamestate.set_board_size(10, 20);
@@ -31,7 +32,11 @@ const init = () => {
     requestAnimationFrame(renderLoop);
 };
 
-(() => import( /* webpackChunkName: "smart_panda" */ './pkg/smart_panda').then(module => {
-    Rust = module;
-    init();
-}))();
+init()
+    .then((wasm) => {
+        Draw.setWasmModule(wasm);
+        Board.setWasmModule(wasm);
+
+        start();
+    })
+    .catch((e) => console.error("Failed to initialize the wasm module:", e));

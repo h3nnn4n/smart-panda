@@ -1,3 +1,25 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+
+import * as Board from "../js/board.js";
+import * as wasm from "../pkg/smart_panda.js";
+
+let rust_initialized = false;
+
+export const initRust = () => {
+    if (!rust_initialized) {
+        const wasm_bytes = readFileSync(resolve(process.cwd(), "pkg/smart_panda_bg.wasm"));
+
+        const wasm_exports = wasm.initSync({ module: wasm_bytes });
+
+        Board.setWasmModule(wasm_exports);
+
+        rust_initialized = true;
+    }
+
+    return wasm;
+};
+
 export const spawn_and_place_o_piece = (gamestate, todo_lateral_move) => {
     gamestate.spawn_piece(2);
     move(gamestate, todo_lateral_move);

@@ -3,10 +3,6 @@ import * as FeatureFunctions from "../js/feature_functions";
 import {
     expect
 } from "chai";
-import {
-    describe,
-    it
-} from "mocha";
 
 describe("Brain", () => {
     it("best_feature_weights have the currect number of elements", () => {

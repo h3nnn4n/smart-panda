@@ -1,9 +1,9 @@
 #![allow(dead_code)]
-use gamestate::board;
+use crate::gamestate::board;
 use wasm_bindgen::prelude::*;
 
-use gamestate::feature_functions::get_column_height;
-use gamestate::GameState;
+use crate::gamestate::feature_functions::get_column_height;
+use crate::gamestate::GameState;
 
 pub fn aggregate_height(board: &board::Board) -> u32 {
     let mut total_aggregate_height = 0;

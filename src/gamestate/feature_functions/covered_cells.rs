@@ -1,9 +1,9 @@
 #![allow(dead_code)]
 
-use gamestate::board;
+use crate::gamestate::board;
 use wasm_bindgen::prelude::*;
 
-use gamestate::GameState;
+use crate::gamestate::GameState;
 
 // Measures how many cells are hidden bellow a hole.
 // It works cumulatively. e.g. a hole at height 3 covers 2 cells,

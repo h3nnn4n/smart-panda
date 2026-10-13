@@ -2,16 +2,16 @@
 name = "smart-panda"
 version = "0.1.0"
 authors = ["h3nnn4n <uber.renan@gmail.com>"]
+edition = "2021"
 
 [features]
 default = ["console_error_panic_hook"]
-# default = ["console_error_panic_hook", "wee_alloc"]
 
 [dependencies]
-wasm-bindgen = "0.2.37"
-cfg-if = "0.1.7"
-console_error_panic_hook = { version = "0.1.6", optional = true }
-wee_alloc = { version = "0.4.3", optional = true }
+wasm-bindgen = "0.2"
+cfg-if = "1"
+console_error_panic_hook = { version = "0.1", optional = true }
+js-sys = "0.3"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
@@ -21,13 +21,7 @@ opt-level = "s"
 lto = true
 
 [dependencies.web-sys]
-version = "0.3.14"
+version = "0.3"
 features = [
   "console",
-]
-
-[dependencies.rand]
-version = "0.6.5"
-features = [
-  "wasm-bindgen",
 ]

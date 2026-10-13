@@ -1,5 +1,5 @@
 #![allow(dead_code)]
-use gamestate::piece;
+use crate::gamestate::piece;
 use std::fmt;
 use wasm_bindgen::prelude::*;
 

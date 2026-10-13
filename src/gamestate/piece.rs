@@ -1,8 +1,5 @@
 #![allow(dead_code)]
 
-extern crate rand;
-
-use rand::Rng;
 use wasm_bindgen::prelude::*;
 
 const SPAWN_POS_X: u32 = 5;
@@ -24,7 +21,7 @@ pub struct Piece {
 #[wasm_bindgen]
 impl Piece {
     pub fn new_random() -> Piece {
-        let id = rand::thread_rng().gen_range(1, 8);
+        let id = (js_sys::Math::random() * 7.0).floor() as u32 + 1;
         Piece::spawn_piece(id)
     }
 

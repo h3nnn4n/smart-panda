@@ -4,63 +4,53 @@ import * as Utils from './utils';
 import {
     expect
 } from "chai";
-import {
-    describe,
-    it
-} from "mocha";
 
 describe("Board", () => {
-    before(async function () {
-        this.Rust = await import('../pkg/smart_panda');
+    let Rust;
+
+    beforeAll(function () {
+        Rust = Utils.initRust();
     });
 
     describe("#store_board", () => {
-        it('runs with active piece', function (done) {
-            let gamestate = this.Rust.get_new_gamestate();
+        it('runs with active piece', function () {
+            let gamestate = Rust.get_new_gamestate();
             gamestate.set_board_size(10, 20);
             gamestate.spawn_piece(2);
 
             Board.store_board(gamestate);
-
-            done();
         });
 
-        it('runs without active piece', function (done) {
-            let gamestate = this.Rust.get_new_gamestate();
+        it('runs without active piece', function () {
+            let gamestate = Rust.get_new_gamestate();
             gamestate.set_board_size(10, 20);
 
             Board.store_board(gamestate);
-
-            done();
         });
     });
 
     describe("#load_board", () => {
-        it('runs with active piece', function (done) {
-            let gamestate = this.Rust.get_new_gamestate();
+        it('runs with active piece', function () {
+            let gamestate = Rust.get_new_gamestate();
             gamestate.set_board_size(10, 20);
             gamestate.spawn_piece(2);
 
             Board.store_board(gamestate);
             Board.load_board(gamestate);
-
-            done();
         });
 
-        it('runs without active piece', function (done) {
-            let gamestate = this.Rust.get_new_gamestate();
+        it('runs without active piece', function () {
+            let gamestate = Rust.get_new_gamestate();
             gamestate.set_board_size(10, 20);
 
             Board.store_board(gamestate);
             Board.load_board(gamestate);
-
-            done();
         });
     });
 
     describe("consistency", () => {
         it('restores inactive pieces', function () {
-            let gamestate = this.Rust.get_new_gamestate();
+            let gamestate = Rust.get_new_gamestate();
             gamestate.set_board_size(10, 20);
 
             expect(gamestate.clear_lines()).to.equal(0);
@@ -83,7 +73,7 @@ describe("Board", () => {
 
         describe("active piece states", () => {
             it('stores active piece', function () {
-                let gamestate = this.Rust.get_new_gamestate();
+                let gamestate = Rust.get_new_gamestate();
                 gamestate.set_board_size(10, 20);
                 gamestate.spawn_piece(2);
 
@@ -95,7 +85,7 @@ describe("Board", () => {
             });
 
             it('stores active piece (0 piece)', function () {
-                let gamestate = this.Rust.get_new_gamestate();
+                let gamestate = Rust.get_new_gamestate();
                 gamestate.set_board_size(10, 20);
                 gamestate.spawn_piece(2);
 
@@ -110,7 +100,7 @@ describe("Board", () => {
             });
 
             it('stores active piece (T piece)', function () {
-                let gamestate = this.Rust.get_new_gamestate();
+                let gamestate = Rust.get_new_gamestate();
                 gamestate.set_board_size(10, 20);
                 gamestate.spawn_piece(7);
 
@@ -132,7 +122,7 @@ describe("Board", () => {
 
                 let active_piece;
 
-                let gamestate = this.Rust.get_new_gamestate();
+                let gamestate = Rust.get_new_gamestate();
                 gamestate.set_board_size(10, 20);
                 gamestate.spawn_random_piece();
                 gamestate.move_active_piece_right();
