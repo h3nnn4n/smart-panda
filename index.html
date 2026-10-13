@@ -1,73 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Smart Panda -&gt; Tetris</title>
   <style>
-    /* TODO Move this outta here */
     body {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      margin: 0;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 12px;
+      font-family: system-ui, sans-serif;
     }
 
-    .monospaced-text {
-      white-space: pre;
-      font-family: monospace;
+    #agent-mode {
+      display: inline-flex;
+    }
+
+    #agent-mode label {
+      border: 1px solid #888;
+      padding: 4px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    #agent-mode label.active {
+      background: #ddd;
+    }
+
+    #agent-mode input {
+      display: none;
     }
 
     .container {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      align-items: flex-start;
+      gap: 16px;
     }
 
-    #agent-mode {
-      padding-bottom: 15px;
+    .monospaced-text {
+      white-space: pre;
+      font-family: ui-monospace, monospace;
+      font-size: 12px;
+      line-height: 1.35;
     }
   </style>
-
-  <meta charset="utf-8">
-  <title>Smart Panda -> Tetris</title>
 </head>
 
 <body>
-  <script src="./bootstrap.js"></script>
+  <script type="module" src="/index.js"></script>
 
-  <div id='agent-mode' class="btn-group btn-group-sm btn-group-toggle">
-    <label class="btn btn-secondary">
-      <input type="radio" name="agent-mode" value='random' id="option1" autocomplete="off"> Random
+  <div id="agent-mode">
+    <label>
+      <input type="radio" name="agent-mode" value="random" autocomplete="off"> Random
     </label>
-    <label class="btn btn-secondary">
-      <input type="radio" name="agent-mode" value='learning' id="option2" autocomplete="off" checked> Learning
+    <label>
+      <input type="radio" name="agent-mode" value="learning" autocomplete="off" checked> Learning
     </label>
   </div>
 
   <div class="container">
-    <div class="row">
-      <div class="col-6">
-        <canvas id="tetris-canvas"></canvas>
-      </div>
-      <div class="monospaced-text col-6">
-        <!-- <div id="fps"></div> -->
-        <div id="score"></div>
-        <div id="feature-functions"></div>
-      </div>
+    <canvas id="tetris-canvas"></canvas>
+    <div class="monospaced-text">
+      <!-- <div id="fps"></div> -->
+      <div id="score"></div>
+      <div id="feature-functions"></div>
     </div>
   </div>
-
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-  </script>
 </body>
 
 </html>

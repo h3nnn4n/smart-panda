@@ -2,19 +2,17 @@ import * as Utils from './utils';
 import {
     expect
 } from "chai";
-import {
-    describe,
-    it
-} from "mocha";
 
 describe("Rust Wasm Interface", () => {
-    before(async function () {
-        this.Rust = await import('../pkg/smart_panda');
+    let Rust;
+
+    beforeAll(function () {
+        Rust = Utils.initRust();
     });
 
     describe("Board", () => {
         it('width and height is set', function () {
-            let gamestate = this.Rust.get_new_gamestate();
+            let gamestate = Rust.get_new_gamestate();
             gamestate.set_board_size(10, 20);
 
             expect(gamestate.get_width()).to.equal(10);
@@ -22,7 +20,7 @@ describe("Rust Wasm Interface", () => {
         });
 
         it('can clear lines', function () {
-            let gamestate = this.Rust.get_new_gamestate();
+            let gamestate = Rust.get_new_gamestate();
             gamestate.set_board_size(10, 20);
 
             expect(gamestate.clear_lines()).to.equal(0);
@@ -40,7 +38,7 @@ describe("Rust Wasm Interface", () => {
     describe("Active piece", () => {
         describe("#has_active_piece", () => {
             it('yes', function () {
-                let gamestate = this.Rust.get_new_gamestate();
+                let gamestate = Rust.get_new_gamestate();
                 gamestate.set_board_size(10, 20);
                 gamestate.spawn_piece(2);
 
@@ -48,7 +46,7 @@ describe("Rust Wasm Interface", () => {
             });
 
             it('no', function () {
-                let gamestate = this.Rust.get_new_gamestate();
+                let gamestate = Rust.get_new_gamestate();
                 gamestate.set_board_size(10, 20);
 
                 expect(gamestate.has_active_piece()).to.equal(false);

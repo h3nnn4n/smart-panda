@@ -1,8 +1,8 @@
 var wasm_module;
 
-(() => import( /* webpackChunkName: "smart_panda_bg" */ '../pkg/smart_panda_bg').then(module => {
+export function setWasmModule(module) {
     wasm_module = module;
-}))();
+}
 
 var active_piece;
 var board_pointer;

@@ -4,9 +4,9 @@ import * as Fps from "./fps.js";
 
 var wasm_module;
 
-(() => import( /* webpackChunkName: "smart_panda_bg" */ '../pkg/smart_panda_bg').then(module => {
+export function setWasmModule(module) {
     wasm_module = module;
-}))();
+}
 
 const CELL_SIZE = 10; // px
 const GRID_COLOR = "#CCCCCC";

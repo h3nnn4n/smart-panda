@@ -1,11 +1,13 @@
-import $ from 'jquery';
-
 var current_agent_mode;
 
 function radio_mode_change_event() {
-    const checked_radio = $("input[name='agent-mode']:checked");
-    const unchecked_radio = $("input[name='agent-mode']").not(':checked');
-    const new_agent_mode = checked_radio.val();
+    const checked_radio = document.querySelector("input[name='agent-mode']:checked");
+
+    if (!checked_radio) {
+        return;
+    }
+
+    const new_agent_mode = checked_radio.value;
 
     if (current_agent_mode != new_agent_mode) {
         // Stuff
@@ -13,14 +15,16 @@ function radio_mode_change_event() {
 
     current_agent_mode = new_agent_mode;
 
-    checked_radio.parent().addClass('active');
-    unchecked_radio.parent().removeClass('active');
+    document.querySelectorAll("input[name='agent-mode']").forEach((radio) => {
+        radio.parentElement.classList.toggle('active', radio.checked);
+    });
 }
 
 export function initInterface() {
-    const $radio_mode = $("input[name='agent-mode']");
+    document.querySelectorAll("input[name='agent-mode']").forEach((radio) => {
+        radio.addEventListener('click', radio_mode_change_event);
+    });
 
-    $radio_mode.click(radio_mode_change_event);
     radio_mode_change_event();
 }
 
