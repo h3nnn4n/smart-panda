@@ -7,7 +7,7 @@ mod number_of_holes;
 mod surface_variance;
 mod vertical_roughness;
 
-use gamestate::board;
+use crate::gamestate::board;
 
 pub fn get_column_height(board: &board::Board, column: u32) -> u32 {
     for j in 0..board.get_height() {

@@ -1,9 +1,9 @@
 #![allow(dead_code)]
 
-use gamestate::board;
+use crate::gamestate::board;
 use wasm_bindgen::prelude::*;
 
-use gamestate::GameState;
+use crate::gamestate::GameState;
 
 pub fn number_of_holes(board: &board::Board) -> u32 {
     let mut total_number_of_holes = 0;
