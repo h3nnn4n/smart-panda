@@ -2,14 +2,13 @@
 
 Smart panda is a simple tetris engine intended (but not limited) to be used as a
 dev environment for Artificial Intelligences. For more information (and a live demo)
-checkout [my personal page](http://h3nnn4n.me/post/smart-panda/).
+checkout [my personal page](https://renan.website/posts/smart-panda/).
 
 Please note that this is my first attempt at doing anything serious with rust and wasm.
-Also I never used webpack before. So expect some nasty things in this repo. Things
-are all over the place. Rust code, javascript files, html and even the output
-of webpack.
-If you are learning (just like I am), this repository may have some bad practices, so beware.
-As I learn more I should make things more tidy around here.
+Expect some nasty things in this repo. Things are all over the place. Rust code,
+javascript files, html and even the build output. If you are learning (just like I am),
+this repository may have some bad practices, so beware. As I learn more I should make
+things more tidy around here.
 
 ## Features
 
@@ -24,14 +23,20 @@ As I learn more I should make things more tidy around here.
 ## How to use
 
 1. Clone this repo
-2. Have the [rust toolchain](https://www.rust-lang.org/tools/install) installed
+2. Have the [rust toolchain](https://www.rust-lang.org/tools/install) installed, plus the wasm target: `rustup target add wasm32-unknown-unknown`
 3. Have [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/) installed
-4. Run `npm install`. If you dont have it, you can get it [here](https://www.npmjs.com/get-npm)
-5. Run `wasm-pack build`
-6. Run `npm link` inside the `pkg` folder
-7. Run `npm link smart-panda` on the project root
-8. Run `npm run start`
-9. Go to `http://localhost:8080/`
+4. Run `npm install`
+5. Run `npm run wasm` to build the wasm package into `pkg/`
+6. Run `npm run dev` and open `http://localhost:5173/`
+
+Other scripts:
+
+- `npm test` runs the vitest suite
+- `npm run build` produces the static bundle in `dist/`
+- `npm run preview` serves the built bundle locally
+
+CI builds and tests every PR, and the manually dispatched `publish` job pushes
+the bundle to the `smart-panda-dist` repo.
 
 ## References
 
